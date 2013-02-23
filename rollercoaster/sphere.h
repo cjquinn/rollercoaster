@@ -7,6 +7,9 @@
 class Sphere
 {
 public:
+	Sphere();
+	~Sphere();
+
   void create(glm::vec3 position, int slices, int stacks);
   void render();
   void release();

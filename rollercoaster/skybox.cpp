@@ -2,7 +2,6 @@
 
 #include "canvas.h"
 #include "camera.h"
-#include "lighting.h"
 #include "matrixstack.h"
 #include "shaderprogram.h"
 
@@ -93,16 +92,6 @@ void Skybox::render()
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
-  
-	// Set light and materials in main shader program
-  glm::vec4 light_position(0, 0, 2000, 1);
-  glm::vec4 light_eye = modelview.top() * light_position;
-
-	Lighting::set(
-		light_eye, 
-		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(0.0f),
-		15.0f);
 
 	modelview.push();
 		glm::vec3 eye = camera->position();

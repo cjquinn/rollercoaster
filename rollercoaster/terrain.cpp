@@ -153,5 +153,4 @@ void Terrain::render()
 		main->setUniform("texture", false);
 		mesh_.render();
 	modelview.pop();
-
 }

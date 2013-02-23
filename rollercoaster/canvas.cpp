@@ -10,15 +10,17 @@
 // Canvas includes
 #include "camera.h"
 #include "freetypefont.h"
+#include "lighting.h"
 #include "matrixstack.h"
 #include "shader.h"
 #include "shaderprogram.h"
 #include "skybox.h"
+#include "splinegun.h"
 #include "terrain.h"
 
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), font_(NULL), skybox_(NULL), terrain_(NULL),  
+  camera_(NULL), font_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL),  
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -29,6 +31,7 @@ Canvas::~Canvas()
   delete camera_;
   delete font_;
   delete skybox_;
+	delete spline_gun_;
 	delete terrain_;
 
   while(!shader_programs_.empty()) {
@@ -49,8 +52,9 @@ void Canvas::init()
   /// Create objects
   camera_ = new Camera;
   font_ = new FreeTypeFont;
+	spline_gun_ = new SplineGun;
+	skybox_ = new Skybox;
 	terrain_ = new Terrain;
-  skybox_ = new Skybox;
 
   RECT dimensions = window_.dimensions();
   int width = dimensions.right - dimensions.left;
@@ -100,7 +104,7 @@ void Canvas::init()
 	
 	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
-  terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
+	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
 }
 
 void Canvas::render() 
@@ -120,23 +124,31 @@ void Canvas::render()
 	modelview_.setIdentity();
 	modelview_.lookAt(camera_->position(), camera_->view(), camera_->upVector());
 
+	// Set default lighting
+	// Set light and materials in main shader program
+  glm::vec4 light_position(0, 0, 2000, 1);
+  glm::vec4 light_eye = modelview_.top() * light_position;
+
+	Lighting::set(
+		light_eye, 
+		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
+		glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(0.0f),
+		15.0f);
+
 	// Canvas renders
-  skybox_->render();
+	skybox_->render();
+	spline_gun_->render();
   terrain_->render();
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
 }
 
-
-
 void Canvas::update() 
 {
   // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
   camera_->update(dt_);
 }
-
-
 
 void Canvas::renderFPS()
 {
@@ -268,6 +280,9 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
         case VK_ESCAPE:
           PostQuitMessage(0);
 					break;
+				case VK_SPACE:
+					spline_gun_->addPoint(camera_->position());
+					break;
       }
     break;
 
@@ -295,7 +310,7 @@ void Canvas::setHInstance(HINSTANCE hinstance)
   hinstance_ = hinstance;
 }
 
-//Getters
+// Canvas object getters
 Camera *Canvas::camera() 
 {
 	return camera_;
