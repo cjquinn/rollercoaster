@@ -62,7 +62,6 @@ vec3 PhongModel(vec4 eyePosition, vec3 eyeNorm)
 // This is the entry point into the vertex shader
 void main()
 {	
-
 	// Transform the vertex spatial position using 
 	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 1.0f);
 	

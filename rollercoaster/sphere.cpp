@@ -102,6 +102,7 @@ void Sphere::render()
   glm::vec4 light_eye = modelview.top() * light_position;
 
 	Lighting::set(
+		0,
 		light_eye, 
 		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
 		glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(0.0f),

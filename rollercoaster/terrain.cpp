@@ -132,7 +132,10 @@ float Terrain::getTerrainHeight(glm::vec3 p)
 void Terrain::render()
 {
 	Camera *camera = Canvas::instance().camera();
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	
+	ShaderProgram *terrain_toon = (Canvas::instance().shader_programs())[2];
+	terrain_toon->use();
+  terrain_toon->setUniform("matrices.projMatrix", camera->perspectiveMatrix());
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
@@ -142,15 +145,18 @@ void Terrain::render()
   glm::vec4 light_eye = modelview.top() * light_position;
 
 	Lighting::set(
+		2,
 		light_eye, 
-		glm::vec3(0.5f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(0.4f), glm::vec3(0.4f), glm::vec3(0.0f),
+		glm::vec3(0.4f), glm::vec3(0.4f), glm::vec3(1.0f),
+		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
 		0.0f);
 
 	modelview.push();
-	  main->setUniform("matrices.modelViewMatrix", modelview.top());
-    main->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
-		main->setUniform("texture", false);
+	  terrain_toon->setUniform("matrices.modelViewMatrix", modelview.top());
+    terrain_toon->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
 		mesh_.render();
 	modelview.pop();
+
+	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	main->use();
 }

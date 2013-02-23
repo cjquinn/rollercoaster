@@ -6,13 +6,14 @@
 #include "shaderprogram.h"
 
 void Lighting::set(
+		int shader_program,
 		glm::vec4 position,
 		glm::vec3 ambient_intensity, glm::vec3 diffuse_intensity, glm::vec3 specular_intensity,
 		glm::vec3 ambient_reflectance, glm::vec3 diffuse_reflectance, glm::vec3 specular_reflectance, 
 		float shininess) {
-
+	
 	Camera *camera = Canvas::instance().camera();
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	ShaderProgram *main = (Canvas::instance().shader_programs())[shader_program];
 
 	main->setUniform("light1.position", position); // Position of light source in eye coordinates
   main->setUniform("light1.La", ambient_intensity); // Ambient colour of light

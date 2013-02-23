@@ -1,5 +1,5 @@
-#ifndef FREETYPEFONT_H
-#define FREETYPEFONT_H
+#ifndef FONT_H
+#define FONT_H
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -10,10 +10,10 @@
 class ShaderProgram;
 
 // This class is a wrapper for FreeType fonts and their usage with OpenGL
-class FreeTypeFont
+class Font
 {
 public:
-  FreeTypeFont();
+  Font();
 
   bool loadFont(std::string file, int size);
   bool loadSystemFont(std::string name, int size);

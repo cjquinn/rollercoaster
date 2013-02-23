@@ -9,7 +9,7 @@
 
 // Canvas includes
 #include "camera.h"
-#include "freetypefont.h"
+#include "font.h"
 #include "lighting.h"
 #include "matrixstack.h"
 #include "shader.h"
@@ -51,7 +51,7 @@ void Canvas::init()
 
   /// Create objects
   camera_ = new Camera;
-  font_ = new FreeTypeFont;
+  font_ = new Font;
 	spline_gun_ = new SplineGun;
 	skybox_ = new Skybox;
 	terrain_ = new Terrain;
@@ -72,6 +72,8 @@ void Canvas::init()
   shader_filenames.push_back("perVertexLighting.frag");
   shader_filenames.push_back("ortho2D.vert");
   shader_filenames.push_back("font2D.frag");
+	shader_filenames.push_back("terrain.vert");
+	shader_filenames.push_back("terrain.frag");
 
   for (int i = 0; i < (int) shader_filenames.size(); ++i) {
     std::string ext = shader_filenames[i].substr((int) shader_filenames[i].size() - 4, 4);
@@ -97,6 +99,14 @@ void Canvas::init()
   fonts->addShader(&shaders[3]);
   fonts->link();
   shader_programs_.push_back(fonts);
+
+	// Create a shader program for terrain
+  ShaderProgram *terrain_toon = new ShaderProgram;
+  terrain_toon->create();
+  terrain_toon->addShader(&shaders[4]);
+  terrain_toon->addShader(&shaders[5]);
+  terrain_toon->link();
+  shader_programs_.push_back(terrain_toon);
 
 	// Font setup
 	font_->loadSystemFont("arial.ttf", 32);
@@ -130,6 +140,7 @@ void Canvas::render()
   glm::vec4 light_eye = modelview_.top() * light_position;
 
 	Lighting::set(
+		0,
 		light_eye, 
 		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
 		glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(0.0f),

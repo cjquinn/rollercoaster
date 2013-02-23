@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="freetypefont.h" />
+    <ClInclude Include="font.h" />
     <ClInclude Include="canvas.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
@@ -26,7 +26,6 @@
     <ClInclude Include="timer.h" />
     <ClInclude Include="matrixstack.h" />
     <ClInclude Include="objmodel.h" />
-    <ClInclude Include="plane.h" />
     <ClInclude Include="skybox.h" />
     <ClInclude Include="sphere.h" />
     <ClInclude Include="texture.h" />
@@ -34,7 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="freetypefont.cpp" />
+    <ClCompile Include="font.cpp" />
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
@@ -48,7 +47,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="matrixstack.cpp" />
     <ClCompile Include="objmodel.cpp" />
-    <ClCompile Include="plane.cpp" />
     <ClCompile Include="skybox.cpp" />
     <ClCompile Include="sphere.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -59,6 +57,8 @@
     <None Include="resources\shaders\ortho2D.vert" />
     <None Include="resources\shaders\perVertexLighting.frag" />
     <None Include="resources\shaders\perVertexLighting.vert" />
+    <None Include="resources\shaders\terrain.frag" />
+    <None Include="resources\shaders\terrain.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4973297A-B162-4923-A75B-AF5540474D4C}</ProjectGuid>

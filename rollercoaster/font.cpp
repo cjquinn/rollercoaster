@@ -1,4 +1,4 @@
-#include "freetypefont.h"
+#include "font.h"
 
 #include "include/glm/gtc/matrix_transform.hpp"
 
@@ -8,7 +8,7 @@
 
 #pragma comment(lib, "lib/freetype2410.lib")
 
-FreeTypeFont::FreeTypeFont() :
+Font::Font() :
   loaded_(false)
 {
 }
@@ -23,7 +23,7 @@ inline int next_p2(int n)
 }
 
 // Creates one single character (its texture).
-void FreeTypeFont::createChar(int index)
+void Font::createChar(int index)
 {
   FT_Load_Glyph(freetype_face_, FT_Get_Char_Index(freetype_face_, index), FT_LOAD_DEFAULT);
 
@@ -91,7 +91,7 @@ void FreeTypeFont::createChar(int index)
 
 
 // Loads an entire font with the given path sFile and pixel size iPXSize
-bool FreeTypeFont::loadFont(std::string file, int size)
+bool Font::loadFont(std::string file, int size)
 {
   BOOL error = FT_Init_FreeType(&freetype_);
   
@@ -133,7 +133,7 @@ bool FreeTypeFont::loadFont(std::string file, int size)
 }
 
 // Loads a system font with given name (sName) and pixel size (iPXSize)
-bool FreeTypeFont::loadSystemFont(std::string name, int size)
+bool Font::loadSystemFont(std::string name, int size)
 {
   char windows_directory[512]; 
   GetWindowsDirectory(windows_directory, 512);
@@ -147,7 +147,7 @@ bool FreeTypeFont::loadSystemFont(std::string name, int size)
 
 
 // Prints text at the specified location (x, y) with the given pixel size (size)
-void FreeTypeFont::print(std::string text, int x, int y, int size)
+void Font::print(std::string text, int x, int y, int size)
 {
   if(!loaded_) {
     return;
@@ -196,7 +196,7 @@ void FreeTypeFont::print(std::string text, int x, int y, int size)
 
 
 // Print formatted text at the location (x, y) with specified pixel size (iPXSize)
-void FreeTypeFont::printf(int x, int y, int size, char* text, ...)
+void Font::printf(int x, int y, int size, char* text, ...)
 {
   char buf[512];
 
@@ -210,7 +210,7 @@ void FreeTypeFont::printf(int x, int y, int size, char* text, ...)
 }
 
 // Deletes all font textures
-void FreeTypeFont::release()
+void Font::release()
 {
   // Sam: any reason this is 128 whereas the arrays are initiated as 256?
   for (int i = 0; i < 128; i++) {
@@ -222,7 +222,7 @@ void FreeTypeFont::release()
 }
 
 // Sets shader programme that font uses
-void FreeTypeFont::setShaderProgram(ShaderProgram* shader_program)
+void Font::setShaderProgram(ShaderProgram* shader_program)
 {
   fonts_ = shader_program;
 }

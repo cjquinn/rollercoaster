@@ -8,7 +8,7 @@
 class Window;
 
 // Utility classes
-class FreeTypeFont;
+class Font;
 class Shader;
 class ShaderProgram;
 class Timer;
@@ -67,7 +67,7 @@ private:
   int fps_;
   bool active_;
 
-  FreeTypeFont *font_;
+  Font *font_;
 	Timer *timer_;
 };
 
