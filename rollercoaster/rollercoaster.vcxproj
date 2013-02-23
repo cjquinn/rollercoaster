@@ -15,6 +15,7 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="freetypefont.h" />
     <ClInclude Include="canvas.h" />
+    <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shaderprogram.h" />
@@ -35,6 +36,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="freetypefont.cpp" />
     <ClCompile Include="canvas.cpp" />
+    <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />

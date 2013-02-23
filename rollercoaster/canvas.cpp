@@ -110,46 +110,19 @@ void Canvas::render()
   glEnable(GL_DEPTH_TEST);
   glDisable(GL_CULL_FACE);
 
-  // Set up a matrix stack
-  modelview_.setIdentity();
-
   // Use the main shader program 
   ShaderProgram *main = (shader_programs_)[0];
   main->use();
+  main->setUniform("sampler", 0);  
   main->setUniform("texture", true);
-  main->setUniform("sampler", 0);
+	main->setUniform("matrices.projMatrix", camera_->perspectiveMatrix());  
+  
+	modelview_.setIdentity();
+	modelview_.lookAt(camera_->position(), camera_->view(), camera_->upVector());
 
-  // Set the projection and modelview matrix based on the current camera location  
-  main->setUniform("matrices.projMatrix", camera_->perspectiveMatrix());
-  modelview_.lookAt(camera_->position(), camera_->view(), camera_->upVector());
-
-  // Set light and materials in main shader program
-  glm::vec4 light_position(0, 0, 2000, 1);
-  glm::vec4 light_eye = modelview_.top() * light_position;
-
-  main->setUniform("light1.position", light_eye); // Position of light source in eye coordinates
-  main->setUniform("light1.La", glm::vec3(1.0f)); // Ambient colour of light
-  main->setUniform("light1.Ld", glm::vec3(1.0f)); // Diffuse colour of light
-  main->setUniform("light1.Ls", glm::vec3(1.0f)); // Specular colour of light
-  main->setUniform("material1.Ma", glm::vec3(1.0f)); // Ambient material reflectance
-  main->setUniform("material1.Md", glm::vec3(0.0f)); // Diffuse material reflectance
-  main->setUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
-  main->setUniform("material1.shininess", 15.0f); // Shininess material property
-
+	// Canvas renders
   skybox_->render();
-
-	main->setUniform("light1.position", light_eye); // Position of light source in eye coordinates
-  main->setUniform("light1.La", glm::vec3(0.5f)); // Ambient colour of light
-  main->setUniform("light1.Ld", glm::vec3(1.0f)); // Diffuse colour of light
-  main->setUniform("light1.Ls", glm::vec3(1.0f)); // Specular colour of light
-  main->setUniform("material1.Ma", glm::vec3(0.4f)); // Ambient material reflectance
-  main->setUniform("material1.Md", glm::vec3(0.4f)); // Diffuse material reflectance
-  main->setUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
-  main->setUniform("material1.shininess", 0.0f); // Shininess material property
-
   terrain_->render();
-
-  renderFPS();
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
