@@ -294,6 +294,9 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
 				case VK_SPACE:
 					spline_gun_->addPoint(camera_->position());
 					break;
+				case 0x43:
+					spline_gun_->createSpline();
+					break;
       }
     break;
 

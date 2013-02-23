@@ -19,6 +19,7 @@
     <ClInclude Include="mesh.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shaderprogram.h" />
+    <ClInclude Include="spline.h" />
     <ClInclude Include="splinegun.h" />
     <ClInclude Include="terrain.h" />
     <ClInclude Include="vertex.h" />
@@ -39,6 +40,7 @@
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
+    <ClCompile Include="spline.cpp" />
     <ClCompile Include="splinegun.cpp" />
     <ClCompile Include="terrain.cpp" />
     <ClCompile Include="vertex.cpp" />

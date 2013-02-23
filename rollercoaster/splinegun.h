@@ -4,6 +4,7 @@
 #include "common.h"
 
 class Sphere;
+class Spline;
 
 class SplineGun
 {
@@ -17,7 +18,10 @@ public:
 	void render();
 
 private:
-	std::vector<Sphere*> points_; 
+	std::vector<glm::vec3> points_;
+	std::vector<Sphere*> spheres_; 
+
+	Spline *spline_;
 };
 
 #endif
