@@ -27,6 +27,8 @@ glm::vec3 Spline::interpolate(glm::vec3 &p0, glm::vec3 &p1, glm::vec3 &p2, glm::
 
 void Spline::computeLength()
 {
+	distances_.clear();
+
 	float length = 0.0f;
 	distances_.push_back(length);
 
@@ -68,7 +70,8 @@ glm::vec3 Spline::pointAt(float d)
 void Spline::create(const std::vector<glm::vec3> &points, int n)
 {
 	points_ = points;
-	
+	sampled_points_.clear();
+
 	computeLength();
 	float total_length = distances_[distances_.size() - 1];
 
@@ -129,8 +132,8 @@ void Spline::render()
 		
 		glBindVertexArray(vao_);
 		glLineWidth(2.5f);
-		//glPointSize(5.0f);
+		glPointSize(5.0f);
 		glDrawArrays(GL_LINE_LOOP, 0, sampled_points_.size());
-		//glDrawArrays(GL_POINTS, 0, m_vUniformlySampledPoints.size());
+		glDrawArrays(GL_POINTS, 0, sampled_points_.size());
 	modelview.pop();
 }
