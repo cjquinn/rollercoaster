@@ -53,7 +53,6 @@ void Canvas::init()
   skybox_ = new Skybox;
 
   RECT dimensions = window_.dimensions();
-
   int width = dimensions.right - dimensions.left;
   int height = dimensions.bottom - dimensions.top;
 
@@ -95,14 +94,12 @@ void Canvas::init()
   fonts->link();
   shader_programs_.push_back(fonts);
 
+	// Font setup
 	font_->loadSystemFont("arial.ttf", 32);
 	font_->setShaderProgram(fonts);
 	
-  // Create the skybox
-  // Skybox downloaded from http://www.redsorceress.com/skybox.html
+	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
-
-	//Create the terrain
   terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
 }
 
@@ -114,23 +111,21 @@ void Canvas::render()
   glDisable(GL_CULL_FACE);
 
   // Set up a matrix stack
-  glutil::MatrixStack modelview;
-  modelview.setIdentity();
+  modelview_.setIdentity();
 
   // Use the main shader program 
   ShaderProgram *main = (shader_programs_)[0];
   main->use();
-  main->setUniform("bUseTexture", true);
-	// Set the texture sampler in the fragment shader
-  main->setUniform("gSampler", 0);
+  main->setUniform("texture", true);
+  main->setUniform("sampler", 0);
 
   // Set the projection and modelview matrix based on the current camera location  
   main->setUniform("matrices.projMatrix", camera_->perspectiveMatrix());
-  modelview.lookAt(camera_->position(), camera_->view(), camera_->upVector());
+  modelview_.lookAt(camera_->position(), camera_->view(), camera_->upVector());
 
   // Set light and materials in main shader program
   glm::vec4 light_position(0, 0, 2000, 1);
-  glm::vec4 light_eye = modelview.top() * light_position;
+  glm::vec4 light_eye = modelview_.top() * light_position;
 
   main->setUniform("light1.position", light_eye); // Position of light source in eye coordinates
   main->setUniform("light1.La", glm::vec3(1.0f)); // Ambient colour of light
@@ -141,17 +136,7 @@ void Canvas::render()
   main->setUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
   main->setUniform("material1.shininess", 15.0f); // Shininess material property
 
-  // Render the skybox and terrain with full ambient light 
-  modelview.push();
-    // Translate the modelview matrix to the camera eye point so skybox stays centred around camera
-    glm::vec3 eye = camera_->position();
-    modelview.translate(eye);
-
-    main->setUniform("matrices.modelViewMatrix", modelview.top());
-    main->setUniform("matrices.normalMatrix", camera_->normalMatrix(modelview.top()));
-
-    skybox_->render();
-  modelview.pop();
+  skybox_->render();
 
 	main->setUniform("light1.position", light_eye); // Position of light source in eye coordinates
   main->setUniform("light1.La", glm::vec3(0.5f)); // Ambient colour of light
@@ -162,12 +147,7 @@ void Canvas::render()
   main->setUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
   main->setUniform("material1.shininess", 0.0f); // Shininess material property
 
-	modelview.push();
-	  main->setUniform("matrices.modelViewMatrix", modelview.top());
-    main->setUniform("matrices.normalMatrix", camera_->normalMatrix(modelview.top()));
-		main->setUniform("bUseTexture", false);
-    terrain_->render();
-	modelview.pop();
+  terrain_->render();
 
   renderFPS();
 
@@ -340,4 +320,20 @@ Canvas& Canvas::instance()
 void Canvas::setHInstance(HINSTANCE hinstance) 
 {
   hinstance_ = hinstance;
+}
+
+//Getters
+Camera *Canvas::camera() 
+{
+	return camera_;
+}
+
+glutil::MatrixStack Canvas::modelview() 
+{
+	return modelview_;
+}
+
+std::vector<ShaderProgram *>  Canvas::shader_programs() 
+{
+	return shader_programs_;
 }

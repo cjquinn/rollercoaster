@@ -1,6 +1,7 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
+#include "common.h"
 #include "texture.h"
 #include "vbo.h"
 

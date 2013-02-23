@@ -1,8 +1,9 @@
-#include "common.h"
-
 #include "skybox.h"
-#include "include/glm/gtc/matrix_transform.hpp"
-#include "include/glm/gtc/type_ptr.hpp"
+
+#include "canvas.h"
+#include "camera.h"
+#include "matrixstack.h"
+#include "shaderprogram.h"
 
 // Create a skybox of a given size with six textures
 void Skybox::create(std::string directory, std::string front, std::string back, std::string left, std::string right, std::string top, /*std::string bottom,*/ float size)
@@ -86,15 +87,29 @@ void Skybox::create(std::string directory, std::string front, std::string back, 
 // Render the skybox
 void Skybox::render()
 {
-  glDepthMask(0);
-  glBindVertexArray(vao_);
+	Camera *camera = Canvas::instance().camera();
+	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
 
-  for (int i = 0; i < 5; ++i) {
-    textures_[i].bind();
-    glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
-  }
+	// Set up a matrix stack
+  glutil::MatrixStack modelview = Canvas::instance().modelview();
+  
+	modelview.push();
+		glm::vec3 eye = camera->position();
+		modelview.translate(eye);
 
-  glDepthMask(1);
+		main->setUniform("matrices.modelViewMatrix", modelview.top());
+		main->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
+
+		glDepthMask(0);
+		glBindVertexArray(vao_);
+
+		for (int i = 0; i < 5; ++i) {
+			textures_[i].bind();
+			glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
+		}
+
+		glDepthMask(1);
+	modelview.pop();
 }
 
 // Release the storage assocaited with the skybox

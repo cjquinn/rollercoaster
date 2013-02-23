@@ -3,6 +3,10 @@
 #include "include/gl/glew.h"
 #include "include/gl/glaux.h"
 
+#include "camera.h"
+#include "canvas.h"
+#include "matrixstack.h"
+#include "shaderprogram.h"
 #include "vertex.h"
 
 Terrain::Terrain()
@@ -95,7 +99,7 @@ bool Terrain::create(char *filename, float size_x, float size_z, float scale)
   }
 
 	// Load the texture 14 Feb 2013
-  texture_.load("resources\\textures\\snow.jpg", true);
+  texture_.load("resources\\textures\\ice.jpg", true);
 
   // Set parameters for texturing using sam pler object
   texture_.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
@@ -126,5 +130,17 @@ float Terrain::getTerrainHeight(glm::vec3 p)
 
 void Terrain::render()
 {
-	mesh_.render();
+	Camera *camera = Canvas::instance().camera();
+	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+
+	// Set up a matrix stack
+  glutil::MatrixStack modelview = Canvas::instance().modelview();
+
+	modelview.push();
+	  main->setUniform("matrices.modelViewMatrix", modelview.top());
+    main->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
+		main->setUniform("texture", false);
+		mesh_.render();
+	modelview.pop();
+
 }

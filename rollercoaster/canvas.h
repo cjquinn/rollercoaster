@@ -2,7 +2,6 @@
 #define CANVAS_H
 
 #include "common.h"
-
 #include "matrixstack.h"
 
 // Setup classes
@@ -22,14 +21,17 @@ class Terrain;
 class Canvas 
 {
 public:
+	Camera *camera();
+	glutil::MatrixStack modelview();
+	std::vector<ShaderProgram *> shader_programs();
 
 private:
 	void init();
   void update();
   void render();
 
-	std::vector<ShaderProgram *> shader_programs_;
 	glutil::MatrixStack modelview_;
+	std::vector<ShaderProgram *> shader_programs_;
 
   Camera *camera_;
 	Skybox *skybox_;
