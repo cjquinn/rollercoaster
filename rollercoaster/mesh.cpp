@@ -30,8 +30,8 @@ glm::vec3 Mesh::computeTriangleNormal(unsigned int id)
 void Mesh::computeTextureCoords()
 {
   for (unsigned int i = 0; i < vertices_.size(); ++i) {
-    vertices_[i].texture.x = vertices_[i].position.x / 5.0f;
-    vertices_[i].texture.y = vertices_[i].position.z / 5.0f;
+    vertices_[i].texture.x = vertices_[i].position.x;
+    vertices_[i].texture.y = vertices_[i].position.z;
   }
 }
 

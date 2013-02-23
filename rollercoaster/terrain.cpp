@@ -95,12 +95,10 @@ bool Terrain::create(char *filename, float size_x, float size_z, float scale)
   }
 
 	// Load the texture 14 Feb 2013
-  texture_.load("resources\\textures\\ice.jpg", true);
+  texture_.load("resources\\textures\\snow.jpg", true);
 
   // Set parameters for texturing using sam pler object
-  texture_.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
-  texture_.setSamplerParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
-  texture_.setSamplerParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+  texture_.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
 
   mesh_.create(texture_, vertices, triangles);
 

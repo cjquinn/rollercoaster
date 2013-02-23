@@ -129,7 +129,7 @@ void Canvas::render()
   modelview.lookAt(camera_->position(), camera_->view(), camera_->upVector());
 
   // Set light and materials in main shader program
-  glm::vec4 light_position(1000, 0, 1000, 1);
+  glm::vec4 light_position(0, 0, 2000, 1);
   glm::vec4 light_eye = modelview.top() * light_position;
 
   main->setUniform("light1.position", light_eye); // Position of light source in eye coordinates
@@ -153,10 +153,19 @@ void Canvas::render()
     skybox_->render();
   modelview.pop();
 
+	main->setUniform("light1.position", light_eye); // Position of light source in eye coordinates
+  main->setUniform("light1.La", glm::vec3(0.5f)); // Ambient colour of light
+  main->setUniform("light1.Ld", glm::vec3(1.0f)); // Diffuse colour of light
+  main->setUniform("light1.Ls", glm::vec3(1.0f)); // Specular colour of light
+  main->setUniform("material1.Ma", glm::vec3(0.4f)); // Ambient material reflectance
+  main->setUniform("material1.Md", glm::vec3(0.4f)); // Diffuse material reflectance
+  main->setUniform("material1.Ms", glm::vec3(0.0f)); // Specular material reflectance
+  main->setUniform("material1.shininess", 0.0f); // Shininess material property
+
 	modelview.push();
 	  main->setUniform("matrices.modelViewMatrix", modelview.top());
     main->setUniform("matrices.normalMatrix", camera_->normalMatrix(modelview.top()));
-		//main->setUniform("bUseTexture", false);
+		main->setUniform("bUseTexture", false);
     terrain_->render();
 	modelview.pop();
 
