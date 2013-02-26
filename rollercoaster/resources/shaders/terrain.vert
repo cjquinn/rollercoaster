@@ -41,12 +41,7 @@ void main()
 {	
 
 	// Normally, one would simply transform the vertex spatial position using 
-	// gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 1.0);
-	
-	// However in this lab we're going to play with the vertex position before the projection
-	vec3 p = inPosition;
-
-	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(p, 1.0);
+	gl_Position = matrices.projMatrix * matrices.modelViewMatrix * vec4(inPosition, 1.0);
 
 	// This code implements the Blinn-Phong reflectance model (to be discussed in Lecture 6)
 	// Code based on the OpenGL 4.0 Shading Language Cookbook, pages 92 - 93
@@ -67,6 +62,6 @@ void main()
 	}
 	
 	intensity = fDiffuseIntensity + fSpecularIntensity;
-
+	
 	vColour = ambientColour + diffuseColour + specularColour;
 } 

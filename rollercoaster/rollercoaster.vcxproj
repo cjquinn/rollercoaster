@@ -55,6 +55,8 @@
     <ClCompile Include="vbo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\shaders\betterToon.frag" />
+    <None Include="resources\shaders\betterToon.vert" />
     <None Include="resources\shaders\font2D.frag" />
     <None Include="resources\shaders\ortho2D.vert" />
     <None Include="resources\shaders\perVertexLighting.frag" />

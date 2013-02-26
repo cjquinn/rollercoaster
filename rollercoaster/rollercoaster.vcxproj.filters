@@ -154,5 +154,11 @@
     <None Include="resources\shaders\terrain.vert">
       <Filter>Shader Files</Filter>
     </None>
+    <None Include="resources\shaders\betterToon.frag">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="resources\shaders\betterToon.vert">
+      <Filter>Shader Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

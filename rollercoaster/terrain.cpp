@@ -135,21 +135,22 @@ void Terrain::render()
 	
 	ShaderProgram *terrain_toon = (Canvas::instance().shader_programs())[2];
 	terrain_toon->use();
+
   terrain_toon->setUniform("matrices.projMatrix", camera->perspectiveMatrix());
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
 
 	// Set light and materials in main shader program
-  glm::vec4 light_position(0, -40, 0, 1);
+  glm::vec4 light_position(0, -500, 0, 1);
   glm::vec4 light_eye = modelview.top() * light_position;
 
 	Lighting::set(
 		2,
 		light_eye, 
-		glm::vec3(0.4f), glm::vec3(0.4f), glm::vec3(1.0f),
 		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		0.0f);
+		glm::vec3(0.235f, 0.352f, 0.592f), glm::vec3(0.2f, 0.2f, 0.772f), glm::vec3(1.0f),
+		5.0f);
 
 	modelview.push();
 	  terrain_toon->setUniform("matrices.modelViewMatrix", modelview.top());

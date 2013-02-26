@@ -74,6 +74,8 @@ void Canvas::init()
   shader_filenames.push_back("font2D.frag");
 	shader_filenames.push_back("terrain.vert");
 	shader_filenames.push_back("terrain.frag");
+	shader_filenames.push_back("betterToon.vert");
+	shader_filenames.push_back("betterToon.frag");
 
   for (int i = 0; i < (int) shader_filenames.size(); ++i) {
     std::string ext = shader_filenames[i].substr((int) shader_filenames[i].size() - 4, 4);
@@ -122,7 +124,7 @@ void Canvas::render()
   // Clear the buffers and enable depth testing (z-buffering)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
-  glDisable(GL_CULL_FACE);
+  //glDisable(GL_CULL_FACE);
 
   // Use the main shader program 
   ShaderProgram *main = (shader_programs_)[0];
