@@ -10,13 +10,10 @@ public:
 	Sphere();
 	~Sphere();
 
-  void create(glm::vec3 position, int slices, int stacks);
+  void create(int slices, int stacks);
   void render();
-  void release();
 
 private:
-	glm::vec3 position_;
-
   UINT vao_;
   VBO vbo_;
   int triangles_;

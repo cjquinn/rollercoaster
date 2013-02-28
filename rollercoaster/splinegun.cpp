@@ -1,47 +1,64 @@
 #include "splinegun.h"
 
-#include "sphere.h"
+#include "point.h"
 #include "spline.h"
 
-SplineGun::SplineGun() : spline_(NULL)
+SplineGun::SplineGun() : render_(true), spline_(NULL)
 {
 }
 
 SplineGun::~SplineGun()
 {
-	while(!spheres_.empty()) {
-		delete spheres_.back();
-		spheres_.pop_back();
+	while(!points_.empty()) {
+		delete points_.back();
+		points_.pop_back();
 	}
 
 	delete spline_;
 }
 
-void SplineGun::createSpline()
-{
-	
-}
-
 void SplineGun::addPoint(glm::vec3 p)
 {
-	Sphere *sphere = new Sphere;
-	sphere->create(p, 25, 25);
-	spheres_.push_back(sphere);
-	points_.push_back(p);
+	Point *point = new Point;
+	point->create(p);
+	
+	if(points_.size() > 0) {
+		points_.back()->setColour(glm::vec3(1.0f));
+	}
+	
+	points_.push_back(point);
 
-	if(points_.size() > 4) {
+	std::vector<glm::vec3> points;
+
+	for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
+		points.push_back((*point)->position());
+	}
+
+	if(points_.size() > 3) {
 		spline_ = new Spline;
-		spline_->create(points_, 100);
+		spline_->create(points);
 	}
 }
 
 void SplineGun::render()
 {
-	for(std::vector<Sphere*>::iterator sphere = spheres_.begin(); sphere != spheres_.end(); ++sphere) {
-		(*sphere)->render();
+	if(render_) {
+		for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
+			(*point)->render();
+		}
 	}
-
-	if(spline_) {
-		spline_->render();
-	}
+		if(spline_) {
+			spline_->render();
+		}
 }
+
+void SplineGun::setRender(bool render)
+{
+	render_ = render;
+}
+
+Spline *SplineGun::spline()
+{
+	return spline_;
+}
+

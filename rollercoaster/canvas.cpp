@@ -70,14 +70,12 @@ void Canvas::init()
 
   shader_filenames.push_back("perVertexLighting.vert");
   shader_filenames.push_back("perVertexLighting.frag");
-  shader_filenames.push_back("ortho2D.vert");
-  shader_filenames.push_back("font2D.frag");
-	shader_filenames.push_back("terrain.vert");
-	shader_filenames.push_back("terrain.frag");
 	shader_filenames.push_back("betterToon.vert");
 	shader_filenames.push_back("betterToon.frag");
+  shader_filenames.push_back("ortho2D.vert");
+  shader_filenames.push_back("font2D.frag");
 
-  for (int i = 0; i < (int) shader_filenames.size(); ++i) {
+  for (unsigned int i = 0; i < shader_filenames.size(); ++i) {
     std::string ext = shader_filenames[i].substr((int) shader_filenames[i].size() - 4, 4);
     int shader_type = ext == "vert" ? GL_VERTEX_SHADER : (ext == "frag" ? GL_FRAGMENT_SHADER : GL_GEOMETRY_SHADER);
 
@@ -94,21 +92,21 @@ void Canvas::init()
   main->link();
   shader_programs_.push_back(main);
   
+	// Create the toon shader program
+  ShaderProgram *toon = new ShaderProgram;
+  toon->create();
+  toon->addShader(&shaders[2]);
+  toon->addShader(&shaders[3]);
+  toon->link();
+  shader_programs_.push_back(toon);
+
   // Create a shader program for fonts
   ShaderProgram *fonts = new ShaderProgram;
   fonts->create();
-  fonts->addShader(&shaders[2]);
-  fonts->addShader(&shaders[3]);
+  fonts->addShader(&shaders[4]);
+  fonts->addShader(&shaders[5]);
   fonts->link();
   shader_programs_.push_back(fonts);
-
-	// Create a shader program for terrain
-  ShaderProgram *terrain_toon = new ShaderProgram;
-  terrain_toon->create();
-  terrain_toon->addShader(&shaders[4]);
-  terrain_toon->addShader(&shaders[5]);
-  terrain_toon->link();
-  shader_programs_.push_back(terrain_toon);
 
 	// Font setup
 	font_->loadSystemFont("arial.ttf", 32);
@@ -124,34 +122,24 @@ void Canvas::render()
   // Clear the buffers and enable depth testing (z-buffering)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
-  //glDisable(GL_CULL_FACE);
 
-  // Use the main shader program 
-  ShaderProgram *main = (shader_programs_)[0];
-  main->use();
-  main->setUniform("sampler", 0);  
-  main->setUniform("texture", true);
-	main->setUniform("matrices.projMatrix", camera_->perspectiveMatrix());  
-  
+	Lighting::white();
+
 	modelview_.setIdentity();
 	modelview_.lookAt(camera_->position(), camera_->view(), camera_->upVector());
 
-	// Set default lighting
-	// Set light and materials in main shader program
-  glm::vec4 light_position(0, 0, 2000, 1);
-  glm::vec4 light_eye = modelview_.top() * light_position;
-
-	Lighting::set(
-		0,
-		light_eye, 
-		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(0.0f),
-		15.0f);
-
+	typedef std::vector<ShaderProgram*>::iterator iterator;
+	for(iterator shader_program = shader_programs_.begin(); shader_program != shader_programs_.end(); ++shader_program) {
+		(*shader_program)->use();
+		(*shader_program)->setUniform("sampler", 0);
+		(*shader_program)->setUniform("matrices.projMatrix", camera_->perspectiveMatrix());
+		(*shader_program)->setUniform("matrices.normalMatrix", camera_->normalMatrix(modelview_.top()));
+	}
+	
 	// Canvas renders
 	skybox_->render();
-	spline_gun_->render();
   terrain_->render();
+	spline_gun_->render();
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
@@ -296,8 +284,9 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
 				case VK_SPACE:
 					spline_gun_->addPoint(camera_->position());
 					break;
-				case 0x43:
-					spline_gun_->createSpline();
+				case VK_RETURN:
+					camera_->follow(spline_gun_->spline());
+					spline_gun_->setRender(false);
 					break;
       }
     break;

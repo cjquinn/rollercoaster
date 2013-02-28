@@ -10,6 +10,9 @@
     <Filter Include="Shader Files">
       <UniqueIdentifier>{84917e1c-1ec9-46fa-9442-3a21e2402b9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Info Files">
+      <UniqueIdentifier>{9752fd2e-dace-44e7-8505-ef6a12730317}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -70,6 +73,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="spline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -134,6 +140,9 @@
     <ClCompile Include="spline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="point.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\font2D.frag">
@@ -159,6 +168,15 @@
     </None>
     <None Include="resources\shaders\betterToon.vert">
       <Filter>Shader Files</Filter>
+    </None>
+    <None Include="..\.gitignore">
+      <Filter>Info Files</Filter>
+    </None>
+    <None Include="..\README.md">
+      <Filter>Info Files</Filter>
+    </None>
+    <None Include="..\todo.txt">
+      <Filter>Info Files</Filter>
     </None>
   </ItemGroup>
 </Project>

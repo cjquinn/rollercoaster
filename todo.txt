@@ -1,0 +1,5 @@
+- rewrite shader files!
+- finalise terrain! - still to do but will do for now!
+- select point
+- move point
+- camera follow spline

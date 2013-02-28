@@ -4,6 +4,8 @@
 #include "include/glm/gtc/type_ptr.hpp"
 #include "include/glm/gtc/matrix_transform.hpp"
 
+class Spline;
+
 class Camera 
 {
 public:
@@ -58,6 +60,9 @@ public:
 
   glm::mat3 normalMatrix(const glm::mat4 &modelview);
 
+	// Follow spline
+	void follow(Spline *spline);
+
 private:
   // The position of the camera's centre of projection
   glm::vec3 position_;
@@ -79,6 +84,8 @@ private:
 
   // Orthographic projection matrix
   glm::mat4 orthographic_;
+
+	Spline *spline_;
 };
 
 #endif

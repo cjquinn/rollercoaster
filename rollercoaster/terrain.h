@@ -4,7 +4,6 @@
 #include "common.h"
 
 #include "mesh.h"
-#include "texture.h"
 
 class Terrain
 {
@@ -28,7 +27,6 @@ private:
 	float size_z_;
 
 	Mesh mesh_;
-	Texture texture_;
 };
 
 #endif

@@ -1,18 +1,18 @@
-#define _USE_MATH_DEFINES
-
 #include "camera.h"
 
 #include "include/gl/glew.h"
 #include <gl/gl.h>
 
+#define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "spline.h"
 #include "window.h"
 
 // Constructor for camera -- initialise with some default values
 Camera::Camera() :
   position_(glm::vec3(0.0f, 10.0f, 100.0f)), view_(glm::vec3(0.0f, 0.0f, 0.0f)),
-  up_vector_(glm::vec3(0.0f, 1.0f, 0.0f)), speed_(0.025f)
+  up_vector_(glm::vec3(0.0f, 1.0f, 0.0f)), speed_(0.025f), spline_(NULL)
 {
 }
  
@@ -104,8 +104,19 @@ void Camera::update(double dt)
   glm::vec3 cross = glm::cross(view_ - position_, up_vector_);
   strafe_vector_ = glm::normalize(cross);
 
-  setViewByMouse();
-  translateByKeyboard(dt);
+	if(!spline_) {
+		setViewByMouse();
+		translateByKeyboard(dt);
+	}else{
+		static float t = 0.0f;
+		t += 0.05f * (float) dt;
+
+		glm::vec3 next = spline_->pointAt(t);
+		glm::vec3 next_next = spline_->pointAt(t += 0.05f * (float) dt);
+		
+		position_ = next;
+		view_ = next_next;
+	}
 }
 
 // Update the camera to respond to key presses for translation
@@ -189,3 +200,7 @@ glm::mat3 Camera::normalMatrix(const glm::mat4 &modelview)
   return glm::transpose(glm::inverse(glm::mat3(modelview)));
 }
 
+void Camera::follow(Spline *spline)
+{
+	spline_= spline;
+}

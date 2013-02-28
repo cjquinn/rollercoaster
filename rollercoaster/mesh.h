@@ -18,7 +18,8 @@ public:
 	Mesh();
 	~Mesh();
 
-	void create(const Texture &texture, const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles);
+	void create(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles);
+	void create(Texture *texture, const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles);
 	
 	void computeVertexNormals();
 	glm::vec3 computeTriangleNormal(unsigned int id);
@@ -31,7 +32,8 @@ public:
 private:
 	UINT vao_;
   VBO vbo_;
-  Texture texture_;
+
+  Texture *texture_;
 
 	std::vector<Vertex> vertices_;
   std::vector<unsigned int> triangles_;

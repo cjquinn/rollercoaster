@@ -78,9 +78,11 @@ void main()
 	// Find the silhouette and create an edge mask
 	vec3 n = normalize(vEyeNorm);
     vec3 v = normalize(-vEyePosition.xyz);
-	float edgeMask = (dot(v, n) >  0.4) ? 1 : 0;
+	float edgeMask = (dot(v, n) >  0.045) ? 1 : 0;
 
     vec3 toonColour = edgeMask * quantisedColour;
 
-	vOutputColour.rgb = toonColour;	
+	vOutputColour.rgb = toonColour;
+
+	
 }

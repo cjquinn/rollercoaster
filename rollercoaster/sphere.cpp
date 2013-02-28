@@ -6,10 +6,6 @@
 #include <math.h>
 
 #include "camera.h"
-#include "canvas.h"
-#include "lighting.h"
-#include "matrixstack.h"
-#include "shaderprogram.h"
 
 Sphere::Sphere()
 {
@@ -17,13 +13,13 @@ Sphere::Sphere()
 
 Sphere::~Sphere()
 {
+  glDeleteVertexArrays(1, &vao_);
+  vbo_.release();
 }
 
 // Create a unit sphere
-void Sphere::create(glm::vec3 position, int slices, int stacks)
+void Sphere::create(int slices, int stacks)
 {
-	position_ = position;
-
 	glGenVertexArrays(1, &vao_);
   glBindVertexArray(vao_);
 
@@ -91,38 +87,6 @@ void Sphere::create(glm::vec3 position, int slices, int stacks)
 // Render the sphere as a set of triangles
 void Sphere::render()
 {
-	Camera *camera = Canvas::instance().camera();
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
-
-	// Set up a matrix stack
-  glutil::MatrixStack modelview = Canvas::instance().modelview();
-
-	// Set light and materials in main shader program
-  glm::vec4 light_position(0, 0, 2000, 1);
-  glm::vec4 light_eye = modelview.top() * light_position;
-
-	Lighting::set(
-		0,
-		light_eye, 
-		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(1.0f), glm::vec3(0.0f), glm::vec3(0.0f),
-		15.0f);
-
-	modelview.push();
-		modelview.translate(position_);
-
-	  main->setUniform("matrices.modelViewMatrix", modelview.top());
-    main->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
-		main->setUniform("texture", false);
-		
-		glBindVertexArray(vao_);
-		glDrawArrays(GL_TRIANGLES, 0, triangles_ * 3);
-	modelview.pop();
-}
-
-// Release memory on the GPU 
-void Sphere::release()
-{
-  glDeleteVertexArrays(1, &vao_);
-  vbo_.release();
+	glBindVertexArray(vao_);
+	glDrawArrays(GL_TRIANGLES, 0, triangles_ * 3);
 }

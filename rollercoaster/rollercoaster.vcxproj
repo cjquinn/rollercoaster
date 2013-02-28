@@ -17,6 +17,7 @@
     <ClInclude Include="canvas.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="point.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shaderprogram.h" />
     <ClInclude Include="spline.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="point.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="spline.cpp" />
@@ -55,6 +57,9 @@
     <ClCompile Include="vbo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.gitignore" />
+    <None Include="..\README.md" />
+    <None Include="..\todo.txt" />
     <None Include="resources\shaders\betterToon.frag" />
     <None Include="resources\shaders\betterToon.vert" />
     <None Include="resources\shaders\font2D.frag" />
@@ -74,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -114,7 +119,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glaux.lib;glew32.lib;opengl32.Lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glaux.lib;glew32.lib;opengl32.Lib;glu32.lib;glut32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>./lib</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>

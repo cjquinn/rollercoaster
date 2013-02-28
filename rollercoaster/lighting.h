@@ -9,6 +9,7 @@ class ShaderProgram;
 class Lighting
 {
 public:
+	static void white();
 	static void set(
 		int shader_program,
 		glm::vec4 position,

@@ -1,6 +1,5 @@
 #include "spline.h"
 
-#include "camera.h"
 #include "canvas.h"
 #include "lighting.h"
 #include "matrixstack.h"
@@ -67,10 +66,12 @@ glm::vec3 Spline::pointAt(float d)
 	return interpolate(points_[p0], points_[p1], points_[p2], points_[p3], t);
 }
 
-void Spline::create(const std::vector<glm::vec3> &points, int n)
+void Spline::create(const std::vector<glm::vec3> &points)
 {
 	points_ = points;
 	sampled_points_.clear();
+
+	int n = 100;
 
 	computeLength();
 	float total_length = distances_[distances_.size() - 1];
@@ -116,23 +117,23 @@ void Spline::create(const std::vector<glm::vec3> &points, int n)
 
 void Spline::render()
 {
-
-	Camera *camera = Canvas::instance().camera();
-	
 	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
 	main->use();
-  main->setUniform("matrices.projMatrix", camera->perspectiveMatrix());
+	main->setUniform("texture", false);
+	
+	Lighting::white();
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
 
 	modelview.push();
 	  main->setUniform("matrices.modelViewMatrix", modelview.top());
-    main->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
 		
 		glBindVertexArray(vao_);
+
 		glLineWidth(2.5f);
 		glPointSize(5.0f);
+
 		glDrawArrays(GL_LINE_LOOP, 0, sampled_points_.size());
 		glDrawArrays(GL_POINTS, 0, sampled_points_.size());
 	modelview.pop();

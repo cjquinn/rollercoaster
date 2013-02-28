@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-class Sphere;
+class Point;
 class Spline;
 
 class SplineGun
@@ -12,14 +12,17 @@ public:
 	SplineGun();
 	~SplineGun();
 
-	void createSpline();
 	void addPoint(glm::vec3 p);
 
 	void render();
 
+	void setRender(bool render);
+	Spline *spline();
+
 private:
-	std::vector<glm::vec3> points_;
-	std::vector<Sphere*> spheres_; 
+	std::vector<Point*> points_;
+
+	bool render_;
 
 	Spline *spline_;
 };

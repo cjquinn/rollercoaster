@@ -24,7 +24,7 @@ void Skybox::create(std::string directory, std::string front, std::string back, 
   top_ = top;
   //bottom_ = bottom;
    
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 5; i++) {
     textures_[i].setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
     textures_[i].setSamplerParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     textures_[i].setSamplerParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -60,7 +60,7 @@ void Skybox::create(std::string directory, std::string front, std::string back, 
 
   glm::vec4 colour = glm::vec4(1, 1, 1, 1);
 
-  for (int i = 0; i < 24; ++i) {
+  for (int i = 0; i < 20; ++i) {
     vbo_.addData(&vertices[i], sizeof(glm::vec3));
     vbo_.addData(&texture_coords[i%4], sizeof(glm::vec2));
     vbo_.addData(&normals[i/4], sizeof(glm::vec3));
@@ -88,7 +88,10 @@ void Skybox::create(std::string directory, std::string front, std::string back, 
 void Skybox::render()
 {
 	Camera *camera = Canvas::instance().camera();
+	
 	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	main->use();
+	main->setUniform("texture", true);
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
@@ -98,7 +101,6 @@ void Skybox::render()
 		modelview.translate(eye);
 
 		main->setUniform("matrices.modelViewMatrix", modelview.top());
-		main->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
 
 		glDepthMask(0);
 		glBindVertexArray(vao_);

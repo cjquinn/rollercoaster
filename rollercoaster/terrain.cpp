@@ -3,7 +3,6 @@
 #include "include/gl/glew.h"
 #include "include/gl/glaux.h"
 
-#include "camera.h"
 #include "canvas.h"
 #include "lighting.h"
 #include "matrixstack.h"
@@ -99,13 +98,7 @@ bool Terrain::create(char *filename, float size_x, float size_z, float scale)
     }
   }
 
-	// Load the texture 14 Feb 2013
-  texture_.load("resources\\textures\\ice.jpg", true);
-
-  // Set parameters for texturing using sam pler object
-  texture_.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
-
-  mesh_.create(texture_, vertices, triangles);
+  mesh_.create(vertices, triangles);
 
 	if (image) {
     if (image->data) {
@@ -131,33 +124,26 @@ float Terrain::getTerrainHeight(glm::vec3 p)
 
 void Terrain::render()
 {
-	Camera *camera = Canvas::instance().camera();
-	
-	ShaderProgram *terrain_toon = (Canvas::instance().shader_programs())[2];
-	terrain_toon->use();
-
-  terrain_toon->setUniform("matrices.projMatrix", camera->perspectiveMatrix());
+	ShaderProgram *toon = (Canvas::instance().shader_programs())[1];
+	toon->use();
+	toon->setUniform("texture", false);
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
 
 	// Set light and materials in main shader program
-  glm::vec4 light_position(0, -500, 0, 1);
+  glm::vec4 light_position(0, 100, 0, 1);
   glm::vec4 light_eye = modelview.top() * light_position;
 
 	Lighting::set(
-		2,
+		1,
 		light_eye, 
 		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(0.235f, 0.352f, 0.592f), glm::vec3(0.2f, 0.2f, 0.772f), glm::vec3(1.0f),
-		5.0f);
+		glm::vec3(0.352f, 0.443f, 0.654f), glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(0.1f),
+		15.0f);
 
 	modelview.push();
-	  terrain_toon->setUniform("matrices.modelViewMatrix", modelview.top());
-    terrain_toon->setUniform("matrices.normalMatrix", camera->normalMatrix(modelview.top()));
+	  toon->setUniform("matrices.modelViewMatrix", modelview.top());
 		mesh_.render();
 	modelview.pop();
-
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
-	main->use();
 }
