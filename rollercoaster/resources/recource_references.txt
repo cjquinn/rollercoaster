@@ -1,2 +1,1 @@
 // Skybox downloaded from http://www.redsorceress.com/skybox.html
-// Terrain downloaded from http://www.cgtextures.com

@@ -24,19 +24,20 @@ void Point::create(glm::vec3 position)
 
 void Point::render()
 {
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
-	main->setUniform("texture", false);
-
+	main->setUniform("toonify", false);
+	main->setUniform("texture_fragment", false);
+	
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
 
-	main->setUniform("material1.Ma", colour_);
+	main->setUniform("material.ambient", colour_);
 
 	modelview.push();
 		modelview.translate(position_);
 
-	  main->setUniform("matrices.modelViewMatrix", modelview.top());
+	  main->setUniform("matrices.modelview", modelview.top());
 
 		sphere_->render();
 	modelview.pop();

@@ -12,8 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="circle.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="font.h" />
+    <ClInclude Include="disk.h" />
     <ClInclude Include="canvas.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
@@ -35,7 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="font.cpp" />
+    <ClCompile Include="circle.cpp" />
+    <ClCompile Include="disk.cpp" />
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
@@ -60,14 +62,8 @@
     <None Include="..\.gitignore" />
     <None Include="..\README.md" />
     <None Include="..\todo.txt" />
-    <None Include="resources\shaders\betterToon.frag" />
-    <None Include="resources\shaders\betterToon.vert" />
-    <None Include="resources\shaders\font2D.frag" />
-    <None Include="resources\shaders\ortho2D.vert" />
-    <None Include="resources\shaders\perVertexLighting.frag" />
-    <None Include="resources\shaders\perVertexLighting.vert" />
-    <None Include="resources\shaders\terrain.frag" />
-    <None Include="resources\shaders\terrain.vert" />
+    <None Include="resources\shaders\main.frag" />
+    <None Include="resources\shaders\main.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4973297A-B162-4923-A75B-AF5540474D4C}</ProjectGuid>
@@ -126,7 +122,7 @@
       </IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
-      <Command>Copy $(ProjectDir)include\lib\*.dll $(TargetDir)</Command>
+      <Command>Copy $(ProjectDir)include\dll\*.dll $(TargetDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -17,6 +17,7 @@ public:
 	void addPoint(glm::vec3 p);
 
 	glm::vec3 pointAt(float d);
+	glm::vec3 frameAt(float d);
 
 private:
 	void computeLength();

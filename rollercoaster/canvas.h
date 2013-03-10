@@ -8,7 +8,6 @@
 class Window;
 
 // Utility classes
-class Font;
 class Shader;
 class ShaderProgram;
 class Timer;
@@ -19,12 +18,15 @@ class Skybox;
 class SplineGun;
 class Terrain;
 
+// Testing
+class Disk;
+
 class Canvas 
 {
 public:
 	Camera *camera();
 	glutil::MatrixStack modelview();
-	std::vector<ShaderProgram *> shader_programs();
+	ShaderProgram *shader_programs(int i = 0);
 
 private:
 	void init();
@@ -38,6 +40,9 @@ private:
 	Skybox *skybox_;
 	SplineGun *spline_gun_;
 	Terrain *terrain_;
+
+	// Testing
+	Disk *disk_;
 
 public:
   enum {
@@ -67,7 +72,6 @@ private:
   int fps_;
   bool active_;
 
-  Font *font_;
 	Timer *timer_;
 };
 

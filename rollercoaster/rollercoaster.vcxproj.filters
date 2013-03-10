@@ -13,6 +13,12 @@
     <Filter Include="Info Files">
       <UniqueIdentifier>{9752fd2e-dace-44e7-8505-ef6a12730317}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Basic Objects">
+      <UniqueIdentifier>{e739473b-6937-4ce4-81cd-e2496ba3a845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Basic Objects">
+      <UniqueIdentifier>{73caaab5-9601-4643-b2a5-3845f5b22566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h">
@@ -28,9 +34,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
@@ -69,14 +72,20 @@
     <ClInclude Include="lighting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="spline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="point.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.h">
+      <Filter>Header Files\Basic Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="circle.h">
+      <Filter>Header Files\Basic Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="disk.h">
+      <Filter>Header Files\Basic Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -93,9 +102,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
@@ -134,41 +140,23 @@
     <ClCompile Include="lighting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="spline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="point.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sphere.cpp">
+      <Filter>Source Files\Basic Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="circle.cpp">
+      <Filter>Source Files\Basic Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="disk.cpp">
+      <Filter>Source Files\Basic Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\shaders\font2D.frag">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\ortho2D.vert">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\perVertexLighting.frag">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\perVertexLighting.vert">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\terrain.frag">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\terrain.vert">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\betterToon.frag">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="resources\shaders\betterToon.vert">
-      <Filter>Shader Files</Filter>
-    </None>
     <None Include="..\.gitignore">
       <Filter>Info Files</Filter>
     </None>
@@ -177,6 +165,12 @@
     </None>
     <None Include="..\todo.txt">
       <Filter>Info Files</Filter>
+    </None>
+    <None Include="resources\shaders\main.frag">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="resources\shaders\main.vert">
+      <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
 </Project>

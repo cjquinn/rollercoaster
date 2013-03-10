@@ -19,22 +19,22 @@ public:
   glm::vec3 view() const;
 
   // Gets the camera up vector
-  glm::vec3 upVector() const;
+  glm::vec3 up_vector() const;
 
   // Gets the camera strafe vector
-  glm::vec3 strafeVector() const;
+  glm::vec3 strafe_vector() const;
 
   // Gets the camera perspective projection matrix
-  glm::mat4 *perspectiveMatrix();
+  glm::mat4 *perspective();
 
   // Gets the camera orthographic projection matrix
-  glm::mat4 *orthographicMatrix();
+  glm::mat4 *orthographic();
 
   // Gets the camera view matrix - note this is not stored in the class but returned using glm::lookAt() in viewMatrix()
-  glm::mat4 viewMatrix();
+  glm::mat4 view_matrix();
 
   // Set the camera position, viewpoint, and up vector
-  void set(glm::vec3 &position, glm::vec3 &viewpoint, glm::vec3 &up_vector);
+  void set(glm::vec3 &position, glm::vec3 &view, glm::vec3 &up_vector);
   
   // Rotate the camera viewpoint -- this effectively rotates the camera
   void rotateViewPoint(float theta, glm::vec3 &point);
@@ -55,10 +55,10 @@ public:
   void update(double dt);
 
   // Set the projection matrices
-  void setPerspectiveMatrix(float fov, float aspect_ratio, float near, float far);
-  void setOrthographicMatrix(int width, int height);
+  void setPerspective(float fov, float aspect_ratio, float near, float far);
+  void setOrthographic(int width, int height);
 
-  glm::mat3 normalMatrix(const glm::mat4 &modelview);
+  glm::mat3 normal(const glm::mat4 &modelview);
 
 	// Follow spline
 	void follow(Spline *spline);

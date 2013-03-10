@@ -9,7 +9,6 @@
 
 // Canvas includes
 #include "camera.h"
-#include "font.h"
 #include "lighting.h"
 #include "matrixstack.h"
 #include "shader.h"
@@ -18,10 +17,15 @@
 #include "splinegun.h"
 #include "terrain.h"
 
+// Testing
+#include "disk.h"
+
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), font_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL),  
+  camera_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL),  
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
+	// Testing
+	, disk_(NULL)
 {
 }
 
@@ -29,7 +33,6 @@ Canvas::~Canvas()
 { 
   // Canvas objects
   delete camera_;
-  delete font_;
   delete skybox_;
 	delete spline_gun_;
 	delete terrain_;
@@ -41,6 +44,9 @@ Canvas::~Canvas()
 
   // setup objects
   delete timer_;
+
+	// Testing
+	delete disk_;
 }
 
 void Canvas::init() 
@@ -51,29 +57,27 @@ void Canvas::init()
 
   /// Create objects
   camera_ = new Camera;
-  font_ = new Font;
 	spline_gun_ = new SplineGun;
 	skybox_ = new Skybox;
 	terrain_ = new Terrain;
+
+	// Testing
+	disk_ = new Disk;
 
   RECT dimensions = window_.dimensions();
   int width = dimensions.right - dimensions.left;
   int height = dimensions.bottom - dimensions.top;
 
   // Set the orthographic and perspective projection matrices based on the image size
-  camera_->setOrthographicMatrix(width, height); 
-  camera_->setPerspectiveMatrix(45.0f, (float) width / (float) height, 0.5f, 5000.0f);
+  camera_->setOrthographic(width, height); 
+  camera_->setPerspective(45.0f, (float) width / (float) height, 0.5f, 5000.0f);
 
   // Load shaders
   std::vector<Shader> shaders;
   std::vector<std::string> shader_filenames;
 
-  shader_filenames.push_back("perVertexLighting.vert");
-  shader_filenames.push_back("perVertexLighting.frag");
-	shader_filenames.push_back("betterToon.vert");
-	shader_filenames.push_back("betterToon.frag");
-  shader_filenames.push_back("ortho2D.vert");
-  shader_filenames.push_back("font2D.frag");
+  shader_filenames.push_back("main.vert");
+	shader_filenames.push_back("main.frag");
 
   for (unsigned int i = 0; i < shader_filenames.size(); ++i) {
     std::string ext = shader_filenames[i].substr((int) shader_filenames[i].size() - 4, 4);
@@ -90,31 +94,16 @@ void Canvas::init()
   main->addShader(&shaders[0]);
   main->addShader(&shaders[1]);
   main->link();
+	main->use();
+	main->setUniform("sampler", 0);
   shader_programs_.push_back(main);
-  
-	// Create the toon shader program
-  ShaderProgram *toon = new ShaderProgram;
-  toon->create();
-  toon->addShader(&shaders[2]);
-  toon->addShader(&shaders[3]);
-  toon->link();
-  shader_programs_.push_back(toon);
 
-  // Create a shader program for fonts
-  ShaderProgram *fonts = new ShaderProgram;
-  fonts->create();
-  fonts->addShader(&shaders[4]);
-  fonts->addShader(&shaders[5]);
-  fonts->link();
-  shader_programs_.push_back(fonts);
-
-	// Font setup
-	font_->loadSystemFont("arial.ttf", 32);
-	font_->setShaderProgram(fonts);
-	
 	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
 	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
+
+	// Testing
+	disk_->create("resources\\textures\\", "image.jpg", 8);
 }
 
 void Canvas::render() 
@@ -126,20 +115,32 @@ void Canvas::render()
 	Lighting::white();
 
 	modelview_.setIdentity();
-	modelview_.lookAt(camera_->position(), camera_->view(), camera_->upVector());
+	modelview_.lookAt(camera_->position(), camera_->view(), camera_->up_vector());
 
-	typedef std::vector<ShaderProgram*>::iterator iterator;
-	for(iterator shader_program = shader_programs_.begin(); shader_program != shader_programs_.end(); ++shader_program) {
-		(*shader_program)->use();
-		(*shader_program)->setUniform("sampler", 0);
-		(*shader_program)->setUniform("matrices.projMatrix", camera_->perspectiveMatrix());
-		(*shader_program)->setUniform("matrices.normalMatrix", camera_->normalMatrix(modelview_.top()));
-	}
+	ShaderProgram *main = shader_programs();
+
+	main->use();
+	main->setUniform("matrices.projection", camera_->perspective());
+	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
 	
 	// Canvas renders
 	skybox_->render();
   terrain_->render();
 	spline_gun_->render();
+
+	main->use();
+	main->setUniform("texture_fragment", false);
+	main->setUniform("material.ambient", glm::vec3(1.0f, 0.0f, 0.0f));
+
+	// Testing
+	modelview_.push();
+		modelview_.translate(25.0f, 1.0f, 25.0f);
+		modelview_.scale(5.0f);
+
+		main->setUniform("matrices.modelview", modelview_.top());
+
+		disk_->render();
+	modelview_.pop();
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
@@ -147,48 +148,7 @@ void Canvas::render()
 
 void Canvas::update() 
 {
-  // Update the camera using the amount of time that has elapsed to avoid framerate dependent motion
   camera_->update(dt_);
-}
-
-void Canvas::renderFPS()
-{
-  static int count = 0;
-  static double elapsed = 0.0f;
-
-  ShaderProgram *fonts = (shader_programs_)[1];
-
-  RECT dimensions = window_.dimensions();
-  int height = dimensions.bottom - dimensions.top;
-
-  // Increase the elapsed time and frame counter
-  elapsed += dt_;
-  ++count;
-
-  // Now we want to subtract the current time by the last time that was stored
-  // to see if the time elapsed has been over a second, which means we found our FPS.
-  if(elapsed > 1000 ) {
-    elapsed = 0;
-    fps_ = count;
-
-    // Reset the frames per second
-    count = 0;
-  }
-
-  if (fps_ > 0) {
-    glDisable(GL_DEPTH_TEST);
-
-    // Use the font shader program and render the text
-    fonts->use();
-
-    fonts->setUniform("matrices.modelViewMatrix", glm::mat4(1));
-    fonts->setUniform("matrices.projMatrix", camera_->orthographicMatrix());
-    fonts->setUniform("vColour", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    
-		font_->printf(20, height - 20, 20, "FPS: %d", fps_);
-
-    glEnable(GL_DEPTH_TEST);
-  }
 }
 
 WPARAM Canvas::exec() 
@@ -326,7 +286,7 @@ glutil::MatrixStack Canvas::modelview()
 	return modelview_;
 }
 
-std::vector<ShaderProgram *>  Canvas::shader_programs() 
+ShaderProgram *Canvas::shader_programs(int i) 
 {
-	return shader_programs_;
+	return shader_programs_[i];
 }

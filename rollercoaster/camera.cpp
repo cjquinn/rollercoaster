@@ -17,10 +17,10 @@ Camera::Camera() :
 }
  
 // Set the camera at a specific position, looking at the view point, with a given up vector
-void Camera::set(glm::vec3 &position, glm::vec3 &viewpoint, glm::vec3 &up_vector)
+void Camera::set(glm::vec3 &position, glm::vec3 &view, glm::vec3 &up_vector)
 {
   position_ = position;
-  view_ = viewpoint;
+  view_ = view;
   up_vector_ = up_vector;
 }
 
@@ -152,50 +152,50 @@ glm::vec3 Camera::view() const
 }
 
 // Return the camera up vector
-glm::vec3 Camera::upVector() const
+glm::vec3 Camera::up_vector() const
 {
   return up_vector_;
 }
 
 // Return the camera strafe vector
-glm::vec3 Camera::strafeVector() const
+glm::vec3 Camera::strafe_vector() const
 {
   return strafe_vector_;
 }
 
 // Return the camera perspective projection matrix
-glm::mat4 *Camera::perspectiveMatrix()
+glm::mat4 *Camera::perspective()
 {
   return &perspective_;
 }
 
 // Return the camera orthographic projection matrix
-glm::mat4 *Camera::orthographicMatrix()
+glm::mat4 *Camera::orthographic()
 {
   return &orthographic_;
 }
 
 // Set the camera perspective projection matrix to produce a view frustum with a specific field of view, aspect ratio, 
 // and near / far clipping planes
-void Camera::setPerspectiveMatrix(float fov, float ratio, float close, float end)
+void Camera::setPerspective(float fov, float ratio, float close, float end)
 {
 	perspective_ = glm::perspective(fov, ratio, close, end);
 }
 
 // The the camera orthographic projection matrix to match the width and height passed in
-void Camera::setOrthographicMatrix(int width, int height)
+void Camera::setOrthographic(int width, int height)
 {
   orthographic_ = glm::ortho(0.0f, (float) width, 0.0f, (float) height);
 }
 
 // Get the camera view matrix
-glm::mat4 Camera::viewMatrix()
+glm::mat4 Camera::view_matrix()
 {
   return glm::lookAt(position_, view_, up_vector_);
 }
 
 // The normal matrix is used to transform normals to eye coordinates -- part of lighting calculations
-glm::mat3 Camera::normalMatrix(const glm::mat4 &modelview)
+glm::mat3 Camera::normal(const glm::mat4 &modelview)
 {
   return glm::transpose(glm::inverse(glm::mat3(modelview)));
 }

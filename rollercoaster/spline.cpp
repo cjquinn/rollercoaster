@@ -71,12 +71,12 @@ void Spline::create(const std::vector<glm::vec3> &points)
 	points_ = points;
 	sampled_points_.clear();
 
-	int n = 100;
-
 	computeLength();
 	float total_length = distances_[distances_.size() - 1];
 
-	float spacing = total_length / n;
+	float spacing = 2;
+	float n = total_length / spacing;
+
 
 	for (int i = 0; i < n; i++) {
 		sampled_points_.push_back(pointAt(i * spacing));
@@ -117,9 +117,10 @@ void Spline::create(const std::vector<glm::vec3> &points)
 
 void Spline::render()
 {
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
-	main->setUniform("texture", false);
+	main->setUniform("toonify", false);
+	main->setUniform("texture_fragment", false);
 	
 	Lighting::white();
 
@@ -127,7 +128,7 @@ void Spline::render()
   glutil::MatrixStack modelview = Canvas::instance().modelview();
 
 	modelview.push();
-	  main->setUniform("matrices.modelViewMatrix", modelview.top());
+	  main->setUniform("matrices.modelview", modelview.top());
 		
 		glBindVertexArray(vao_);
 

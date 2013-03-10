@@ -89,9 +89,10 @@ void Skybox::render()
 {
 	Camera *camera = Canvas::instance().camera();
 	
-	ShaderProgram *main = (Canvas::instance().shader_programs())[0];
+	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
-	main->setUniform("texture", true);
+	main->setUniform("toonify", false);
+	main->setUniform("texture_fragment", true);
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
@@ -100,7 +101,7 @@ void Skybox::render()
 		glm::vec3 eye = camera->position();
 		modelview.translate(eye);
 
-		main->setUniform("matrices.modelViewMatrix", modelview.top());
+		main->setUniform("matrices.modelview", modelview.top());
 
 		glDepthMask(0);
 		glBindVertexArray(vao_);

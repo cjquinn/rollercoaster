@@ -1,5 +1,16 @@
-- rewrite shader files!
-- finalise terrain! - still to do but will do for now!
-- select point
-- move point
-- camera follow spline
+Must do
+-------
+Create track geometry
+	- create frame class
+	- replace points with disks
+	- create triangles between disks
+Create struts
+Think up models for scene
+Add camera functionality
+Day Time Night Time
+Implement Blur
+Particles for clouds?
+
+Optional
+--------
+Rollercoaster creator
