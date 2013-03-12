@@ -87,6 +87,9 @@
     <ClInclude Include="disk.h">
       <Filter>Header Files\Basic Objects</Filter>
     </ClInclude>
+    <ClInclude Include="frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="disk.cpp">
       <Filter>Source Files\Basic Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="frame.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

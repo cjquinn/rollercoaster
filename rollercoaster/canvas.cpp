@@ -103,7 +103,7 @@ void Canvas::init()
 	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
 
 	// Testing
-	disk_->create("resources\\textures\\", "image.jpg", 8);
+	//disk_->create("resources\\textures\\", "image.jpg", 8);
 }
 
 void Canvas::render() 
@@ -139,7 +139,7 @@ void Canvas::render()
 
 		main->setUniform("matrices.modelview", modelview_.top());
 
-		disk_->render();
+		//disk_->render();
 	modelview_.pop();
 
   // Swap buffers to show the rendered image

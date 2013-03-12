@@ -1,7 +1,7 @@
 Must do
 -------
 Create track geometry
-	- create frame class
+	- work out how to use frame to draw the disks correctly!
 	- replace points with disks
 	- create triangles between disks
 Create struts

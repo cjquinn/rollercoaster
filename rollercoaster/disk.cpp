@@ -5,11 +5,14 @@
 #include "disk.h"
 
 #include <math.h>
+
 Disk::Disk()
 {}
+
 Disk::~Disk()
 {}
-void Disk::create(std::string directory, std::string file, unsigned int samples)
+
+void Disk::create(std::string directory, std::string file, unsigned int samples, Frame frame)
 {
 	texture_.load(directory+file);
 	texture_.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);

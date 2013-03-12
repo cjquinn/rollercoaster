@@ -2,6 +2,7 @@
 #define SPLINE_H
 
 #include "common.h"
+#include "frame.h"
 #include "vbo.h"
 
 class Spline
@@ -17,7 +18,7 @@ public:
 	void addPoint(glm::vec3 p);
 
 	glm::vec3 pointAt(float d);
-	glm::vec3 frameAt(float d);
+	//Frame frameAt(float d);
 
 private:
 	void computeLength();
@@ -26,6 +27,7 @@ private:
   VBO vbo_;
 
 	std::vector<float> distances_;
+	std::vector<Frame> frames_;
 	std::vector<glm::vec3> points_;
 	std::vector<glm::vec3> sampled_points_;
 };

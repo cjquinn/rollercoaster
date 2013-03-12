@@ -1,6 +1,7 @@
 #ifndef DISK_H
 #define DISK_H
 
+#include "frame.h"
 #include "texture.h"
 #include "vbo.h"
 
@@ -10,7 +11,7 @@ class Disk
 public:
 	Disk();
 	~Disk();
-	void create(std::string directory, std::string file, unsigned int samples);
+	void create(std::string directory, std::string file, unsigned int samples, Frame frame);
 	void render();
 	void release();
 	private:
