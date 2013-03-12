@@ -16,16 +16,12 @@
 #include "skybox.h"
 #include "splinegun.h"
 #include "terrain.h"
-
-// Testing
-#include "disk.h"
+#include "track.h"
 
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL),  
+  camera_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL),  
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
-	// Testing
-	, disk_(NULL)
 {
 }
 
@@ -36,6 +32,7 @@ Canvas::~Canvas()
   delete skybox_;
 	delete spline_gun_;
 	delete terrain_;
+	delete track_;
 
   while(!shader_programs_.empty()) {
     delete shader_programs_.back();
@@ -44,9 +41,6 @@ Canvas::~Canvas()
 
   // setup objects
   delete timer_;
-
-	// Testing
-	delete disk_;
 }
 
 void Canvas::init() 
@@ -60,9 +54,7 @@ void Canvas::init()
 	spline_gun_ = new SplineGun;
 	skybox_ = new Skybox;
 	terrain_ = new Terrain;
-
-	// Testing
-	disk_ = new Disk;
+	track_ = new Track;
 
   RECT dimensions = window_.dimensions();
   int width = dimensions.right - dimensions.left;
@@ -101,9 +93,6 @@ void Canvas::init()
 	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
 	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
-
-	// Testing
-	//disk_->create("resources\\textures\\", "image.jpg", 8);
 }
 
 void Canvas::render() 
@@ -127,20 +116,7 @@ void Canvas::render()
 	skybox_->render();
   terrain_->render();
 	spline_gun_->render();
-
-	main->use();
-	main->setUniform("texture_fragment", false);
-	main->setUniform("material.ambient", glm::vec3(1.0f, 0.0f, 0.0f));
-
-	// Testing
-	modelview_.push();
-		modelview_.translate(25.0f, 1.0f, 25.0f);
-		modelview_.scale(5.0f);
-
-		main->setUniform("matrices.modelview", modelview_.top());
-
-		//disk_->render();
-	modelview_.pop();
+	track_->render();
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
@@ -245,8 +221,8 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
 					spline_gun_->addPoint(camera_->position());
 					break;
 				case VK_RETURN:
-					camera_->follow(spline_gun_->spline());
-					spline_gun_->setRender(false);
+					//camera_->follow(spline_gun_->spline());
+					track_->create(spline_gun_->spline());
 					break;
       }
     break;

@@ -66,20 +66,6 @@ glm::vec3 Spline::pointAt(float d)
 	return interpolate(points_[p0], points_[p1], points_[p2], points_[p3], t);
 }
 
-/*Frame Spline::frameAt(float d)
-{
-	Frame frame;
-
-	for (int i = 0; i < frames_.size(); i++) {
-		if (frames_.at(i).p() == pointAt(d)) {
-			frame = frames_.at(i);
-			break;
-		}
-	}
-
-	return frame;
-}*/
-
 void Spline::create(const std::vector<glm::vec3> &points)
 {
 	points_ = points;
@@ -95,12 +81,6 @@ void Spline::create(const std::vector<glm::vec3> &points)
 	for (int i = 0; i < n; i++) {
 		sampled_points_.push_back(pointAt(i * spacing));
 	}
-
-	for (int i = 0; i < sampled_points_.size() - 1; i++) {
-		frames_.push_back(Frame(sampled_points_.at(i), sampled_points_.at(i+1)));
-	}
-
-	frames_.push_back(Frame(sampled_points_.back(), sampled_points_.front())); 
 
 	glGenVertexArrays(1, &vao_);
 	glBindVertexArray(vao_);
@@ -153,9 +133,14 @@ void Spline::render()
 		glBindVertexArray(vao_);
 
 		glLineWidth(2.5f);
-		glPointSize(5.0f);
+		//glPointSize(5.0f);
 
 		glDrawArrays(GL_LINE_LOOP, 0, sampled_points_.size());
-		glDrawArrays(GL_POINTS, 0, sampled_points_.size());
+		//glDrawArrays(GL_POINTS, 0, sampled_points_.size());
 	modelview.pop();
+}
+
+std::vector<glm::vec3> Spline::sampled_points()
+{
+	return sampled_points_;
 }

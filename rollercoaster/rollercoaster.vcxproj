@@ -12,9 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
-    <ClInclude Include="circle.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="disk.h" />
+    <ClInclude Include="octagon.h" />
     <ClInclude Include="canvas.h" />
     <ClInclude Include="frame.h" />
     <ClInclude Include="lighting.h" />
@@ -25,6 +24,7 @@
     <ClInclude Include="spline.h" />
     <ClInclude Include="splinegun.h" />
     <ClInclude Include="terrain.h" />
+    <ClInclude Include="track.h" />
     <ClInclude Include="vertex.h" />
     <ClInclude Include="window.h" />
     <ClInclude Include="timer.h" />
@@ -37,8 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="circle.cpp" />
-    <ClCompile Include="disk.cpp" />
+    <ClCompile Include="octagon.cpp" />
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="frame.cpp" />
     <ClCompile Include="lighting.cpp" />
@@ -49,6 +48,7 @@
     <ClCompile Include="spline.cpp" />
     <ClCompile Include="splinegun.cpp" />
     <ClCompile Include="terrain.cpp" />
+    <ClCompile Include="track.cpp" />
     <ClCompile Include="vertex.cpp" />
     <ClCompile Include="window.cpp" />
     <ClCompile Include="timer.cpp" />

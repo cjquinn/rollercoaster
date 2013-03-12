@@ -3,7 +3,7 @@
 #include "point.h"
 #include "spline.h"
 
-SplineGun::SplineGun() : render_(true), spline_(NULL)
+SplineGun::SplineGun() : spline_(NULL)
 {
 }
 
@@ -42,19 +42,13 @@ void SplineGun::addPoint(glm::vec3 p)
 
 void SplineGun::render()
 {
-	if(render_) {
-		for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
-			(*point)->render();
-		}
+	for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
+		(*point)->render();
 	}
-		if(spline_) {
-			spline_->render();
-		}
-}
 
-void SplineGun::setRender(bool render)
-{
-	render_ = render;
+	if(spline_) {
+		spline_->render();
+	}
 }
 
 Spline *SplineGun::spline()

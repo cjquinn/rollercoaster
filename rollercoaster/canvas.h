@@ -17,9 +17,7 @@ class Camera;
 class Skybox;
 class SplineGun;
 class Terrain;
-
-// Testing
-class Disk;
+class Track;
 
 class Canvas 
 {
@@ -40,9 +38,7 @@ private:
 	Skybox *skybox_;
 	SplineGun *spline_gun_;
 	Terrain *terrain_;
-
-	// Testing
-	Disk *disk_;
+	Track *track_;
 
 public:
   enum {

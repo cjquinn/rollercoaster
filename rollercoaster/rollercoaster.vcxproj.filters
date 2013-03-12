@@ -81,13 +81,13 @@
     <ClInclude Include="sphere.h">
       <Filter>Header Files\Basic Objects</Filter>
     </ClInclude>
-    <ClInclude Include="circle.h">
-      <Filter>Header Files\Basic Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="disk.h">
-      <Filter>Header Files\Basic Objects</Filter>
-    </ClInclude>
     <ClInclude Include="frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="octagon.h">
+      <Filter>Header Files\Basic Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="track.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,13 +152,13 @@
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files\Basic Objects</Filter>
     </ClCompile>
-    <ClCompile Include="circle.cpp">
-      <Filter>Source Files\Basic Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="disk.cpp">
-      <Filter>Source Files\Basic Objects</Filter>
-    </ClCompile>
     <ClCompile Include="frame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="octagon.cpp">
+      <Filter>Source Files\Basic Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="track.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
