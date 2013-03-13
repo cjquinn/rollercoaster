@@ -42,9 +42,9 @@ void SplineGun::addPoint(glm::vec3 p)
 
 void SplineGun::render()
 {
-	for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
+	/*for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
 		(*point)->render();
-	}
+	}*/
 
 	if(spline_) {
 		spline_->render();

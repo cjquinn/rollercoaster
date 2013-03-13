@@ -84,10 +84,13 @@
     <ClInclude Include="frame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="octagon.h">
+    <ClInclude Include="track.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="circle.h">
       <Filter>Header Files\Basic Objects</Filter>
     </ClInclude>
-    <ClInclude Include="track.h">
+    <ClInclude Include="support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,10 +158,13 @@
     <ClCompile Include="frame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="octagon.cpp">
+    <ClCompile Include="track.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="circle.cpp">
       <Filter>Source Files\Basic Objects</Filter>
     </ClCompile>
-    <ClCompile Include="track.cpp">
+    <ClCompile Include="support.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

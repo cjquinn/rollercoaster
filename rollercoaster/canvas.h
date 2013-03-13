@@ -25,6 +25,7 @@ public:
 	Camera *camera();
 	glutil::MatrixStack modelview();
 	ShaderProgram *shader_programs(int i = 0);
+	Terrain *terrain();
 
 private:
 	void init();
@@ -39,6 +40,8 @@ private:
 	SplineGun *spline_gun_;
 	Terrain *terrain_;
 	Track *track_;
+
+	bool render_track;
 
 public:
   enum {

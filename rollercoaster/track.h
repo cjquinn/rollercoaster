@@ -1,9 +1,11 @@
 #ifndef TRACK_H
 #define TRACK_H
 
+#include "mesh.h"
 #include "spline.h"
 
-class Octagon;
+class Circle;
+class Support;
 
 class Track
 {
@@ -15,7 +17,10 @@ public:
 	void render();
 
 private:
-	std::vector<Octagon*> octagons_;
+	Mesh mesh_;
+
+	std::vector<Circle*> circles_;
+	std::vector<Support*> supports_;
 };
 
 #endif

@@ -20,7 +20,7 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL),  
+  camera_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -116,7 +116,9 @@ void Canvas::render()
 	skybox_->render();
   terrain_->render();
 	spline_gun_->render();
-	track_->render();
+	if (render_track) {
+		track_->render();
+	}
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
@@ -221,8 +223,9 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
 					spline_gun_->addPoint(camera_->position());
 					break;
 				case VK_RETURN:
-					//camera_->follow(spline_gun_->spline());
 					track_->create(spline_gun_->spline());
+					render_track = true;
+					//camera_->follow(spline_gun_->spline());
 					break;
       }
     break;
@@ -265,4 +268,9 @@ glutil::MatrixStack Canvas::modelview()
 ShaderProgram *Canvas::shader_programs(int i) 
 {
 	return shader_programs_[i];
+}
+
+Terrain *Canvas::terrain()
+{
+	return terrain_;
 }

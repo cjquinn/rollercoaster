@@ -86,6 +86,8 @@ private:
   glm::mat4 orthographic_;
 
 	Spline *spline_;
+
+	glm::vec3 b_;
 };
 
 #endif

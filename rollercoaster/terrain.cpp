@@ -126,7 +126,7 @@ void Terrain::render()
 {
 	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
-	main->setUniform("toonify", false);
+	main->setUniform("toonify", true);
 	main->setUniform("texture_fragment", false);
 
 	// Set up a matrix stack

@@ -1,10 +1,10 @@
 Must do
 -------
-Create track geometry
-	- work out how to use frame to draw the disks correctly!
-	- replace points with disks
-	- create triangles between disks
 Create struts
+	- use circles start and finish
+	- start is point on track
+	- finish is just below ground
+Test textures
 Think up models for scene
 Add camera functionality
 Day Time Night Time

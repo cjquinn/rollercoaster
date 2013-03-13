@@ -6,13 +6,14 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "frame.h"
 #include "spline.h"
 #include "window.h"
 
 // Constructor for camera -- initialise with some default values
 Camera::Camera() :
   position_(glm::vec3(0.0f, 10.0f, 100.0f)), view_(glm::vec3(0.0f, 0.0f, 0.0f)),
-  up_vector_(glm::vec3(0.0f, 1.0f, 0.0f)), speed_(0.025f), spline_(NULL)
+  up_vector_(glm::vec3(0.0f, 1.0f, 0.0f)), speed_(0.025f), spline_(NULL)//, b_(0.0f, 1.0f, 0.0f)
 {
 }
  
@@ -109,13 +110,22 @@ void Camera::update(double dt)
 		translateByKeyboard(dt);
 	}else{
 		static float t = 0.0f;
-		t += 0.05f * (float) dt;
+		t += 0.005f * (float) dt;
 
-		glm::vec3 next = spline_->pointAt(t);
-		glm::vec3 next_next = spline_->pointAt(t += 0.05f * (float) dt);
-		
-		position_ = next;
-		view_ = next_next;
+		glm::vec3 p = spline_->pointAt(t);
+		glm::vec3 q = spline_->pointAt(t += 0.05f * (float) dt);
+
+		Frame frame(p, q, up_vector_);
+
+		//glm::vec3 n = glm::normalize(glm::cross(frame.t(), b_));
+		//glm::vec3 b = glm::normalize(glm::cross(n, frame.t())); 
+
+		//b_ = b;
+
+		position_ = frame.p() + 20.0f * frame.b();
+		view_ = frame.p() + 30.0f * frame.t();
+
+		//up_vector_ = b_;
 	}
 }
 

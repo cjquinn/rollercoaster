@@ -1,9 +1,11 @@
 #include "frame.h"
 
-Frame::Frame(glm::vec3 p, glm::vec3 q) : 
-	p_(p), q_(q), t_(glm::normalize(q_ - p_)), 
-	n_(glm::normalize(glm::cross(t_, glm::vec3(0, 1, 0)))), b_(glm::normalize(glm::cross(n_, t_)))
+Frame::Frame(glm::vec3 p, glm::vec3 q, glm::vec3 y) : p_(p), q_(q)
 {
+	t_ = q_ - p_;
+
+	n_ = glm::normalize(glm::cross(t_, y));
+	b_ = glm::normalize(glm::cross(n_, t_));
 }
 
 Frame::~Frame()
@@ -12,13 +14,13 @@ Frame::~Frame()
 
 glm::vec3 Frame::b()
 {
-	return glm::normalize(b_);
+	return b_;
 }
 
 glm::vec3 Frame::n()
 {
 
-	return glm::normalize(n_);
+	return n_;
 }
 
 glm::vec3 Frame::p()
@@ -28,5 +30,5 @@ glm::vec3 Frame::p()
 
 glm::vec3 Frame::t()
 {
-	return t_;
+	return glm::normalize(t_);
 }
