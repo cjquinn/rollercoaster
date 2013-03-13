@@ -36,8 +36,8 @@ void Octagon::create(Frame *frame)
 	for(unsigned int i = 0; i <= 8; i++) {
 		float theta = (i / (float) 8) * 2 * (float) M_PI;
 		
-		// Frame is not working!!!!
-		glm::vec3 p(glm::cos(theta) * glm::vec3(0,1,0) + glm::sin(theta) * glm::vec3(0,0,1));
+		// Frame is not working!!!! slightly better but slanty....
+		glm::vec3 p(glm::cos(theta) * frame_->n() + glm::sin(theta) * frame_->b());
 		glm::vec3 n(0.0f, 1.0f, 0.0f);
 		
 		vertices_++;

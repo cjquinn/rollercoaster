@@ -17,9 +17,8 @@ Track::~Track()
 void Track::create(Spline *spline) 
 {
 	for (unsigned int i = 0; i < spline->sampled_points().size() - 1; i++) {
-		Octagon *octagon = new Octagon;
-		octagon->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)));
-		octagons_.push_back(octagon); 
+		octagons_.push_back(new Octagon); 
+		octagons_.at(i)->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)));
 	}
 }
 
