@@ -122,7 +122,7 @@ void Camera::update(double dt)
 
 		//b_ = b;
 
-		position_ = frame.p() + 20.0f * frame.b();
+		position_ = frame.p() + 10.0f * frame.b();
 		view_ = frame.p() + 30.0f * frame.t();
 
 		//up_vector_ = b_;

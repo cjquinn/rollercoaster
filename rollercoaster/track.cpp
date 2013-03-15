@@ -7,9 +7,10 @@
 #include "matrixstack.h"
 #include "shaderprogram.h"
 #include "support.h"
+#include "texture.h"
 #include "vertex.h"
 
-Track::Track()
+Track::Track() : texture_(NULL)
 {}
 
 Track::~Track()
@@ -27,14 +28,20 @@ Track::~Track()
 
 void Track::create(Spline *spline) 
 {
+	texture_ = new Texture;
+	texture_->load("resources\\textures\\metal.jpg");
+	texture_->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
+	texture_->setSamplerParameter(GL_TEXTURE_WRAP_S, GL_CLAMP);
+	texture_->setSamplerParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
 
-	int samples = 6;
+	int samples = 5;
 
 	for (unsigned int i = 0; i < spline->sampled_points().size() - 1; i++) {
 		Circle *circle = new Circle;
-		circle->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)), samples, 2.0f);
+		circle->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)), samples, 1.5f);
 		circles_.push_back(circle);
 
 		if(i % 20 == 0) {
@@ -52,20 +59,20 @@ void Track::create(Spline *spline)
 	}
 
 	for (int i = 0; i < samples; ++i) {
-		for (unsigned int j = 0; j < circles_.size(); ++j) {
+		for (unsigned int j = 0; j < circles_.size() - 1; ++j) {
       int index = j + i * circles_.size();
-
+			
 			triangles.push_back((index + 1) % vertices.size());
-      triangles.push_back((index + 1 + circles_.size()) % vertices.size());
-      triangles.push_back(index % vertices.size());
+			triangles.push_back((index + 1 + circles_.size()) % vertices.size());
+			triangles.push_back(index % vertices.size());
       
 			triangles.push_back((index + 1 + circles_.size()) % vertices.size());
-      triangles.push_back((index + circles_.size()) % vertices.size());
-      triangles.push_back(index % vertices.size());
+			triangles.push_back((index + circles_.size()) % vertices.size());
+			triangles.push_back(index % vertices.size());
     }
   }
 
-	mesh_.create(vertices, triangles);
+	mesh_.create(texture_, vertices, triangles);
 }
 
 void Track::render()
@@ -88,6 +95,8 @@ void Track::render()
 		glm::vec3(1.0f, 0.443f, 0.654f), glm::vec3(1.0f, 0.356f, 0.603f), glm::vec3(0.1f),
 		15.0f);
 
+	//Lighting::white();
+
 	modelview.push();
 	  main->setUniform("matrices.modelview", modelview.top());
 		mesh_.render();
@@ -96,4 +105,8 @@ void Track::render()
 	for (unsigned int i = 0; i < supports_.size(); i++) {
 		supports_.at(i)->render();
 	}
+
+	/*for (unsigned int i = 0; i < circles_.size(); i++) {
+		circles_.at(i)->render();
+	}*/
 }

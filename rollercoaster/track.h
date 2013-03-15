@@ -6,6 +6,7 @@
 
 class Circle;
 class Support;
+class Texture;
 
 class Track
 {
@@ -21,6 +22,8 @@ private:
 
 	std::vector<Circle*> circles_;
 	std::vector<Support*> supports_;
+
+	Texture *texture_;
 };
 
 #endif
