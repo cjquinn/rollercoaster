@@ -13,6 +13,7 @@ public:
 	Circle();
 	~Circle();
 
+	void create(glm::vec3 p, int samples, float scale);
 	void create(Frame *frame, int samples, float scale);
 	
 	void render();

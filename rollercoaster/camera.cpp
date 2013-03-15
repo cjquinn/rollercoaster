@@ -115,7 +115,7 @@ void Camera::update(double dt)
 		glm::vec3 p = spline_->pointAt(t);
 		glm::vec3 q = spline_->pointAt(t += 0.05f * (float) dt);
 
-		Frame frame(p, q, up_vector_);
+		Frame frame(p, q);
 
 		//glm::vec3 n = glm::normalize(glm::cross(frame.t(), b_));
 		//glm::vec3 b = glm::normalize(glm::cross(n, frame.t())); 

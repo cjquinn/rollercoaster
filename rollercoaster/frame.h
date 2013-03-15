@@ -7,7 +7,7 @@
 class Frame
 {
 public:
-	Frame(glm::vec3 p, glm::vec3 q, glm::vec3 y);
+	Frame(glm::vec3 p, glm::vec3 q);
 	~Frame();
 
 	glm::vec3 b();

@@ -23,19 +23,15 @@ void Support::create(glm::vec3 p)
 
 	unsigned int samples = 4;
 
-	glm::vec3 end_position(p.x, Canvas::instance().terrain()->getTerrainHeight(p), p.z);
-	glm::vec3 up_vector(0.0f, 0.0f, 1.0f);
-
-	Frame *start_frame = new Frame(p, end_position, up_vector);
-	Frame *end_frame = new Frame(end_position, end_position - end_position, up_vector);
+	glm::vec3 f(p.x, Canvas::instance().terrain()->getTerrainHeight(p), p.z);
 
 	Circle *start, *end;
 
 	start = new Circle;
 	end = new Circle;
 
-	start->create(start_frame, samples, 1);
-	end->create(end_frame, samples, 1);
+	start->create(p, samples, 1);
+	end->create(f, samples, 1);
 
 	circles.push_back(start);
 	circles.push_back(end);
@@ -47,17 +43,17 @@ void Support::create(glm::vec3 p)
 		}
 	}
 
-	for (int z = 0; z < samples - 1; ++z) {
-    for (int x = 0; x < circles.size() - 1; ++x) {
-      int index = x + z * circles.size();
+	for (int i = 0; i < samples; ++i) {
+		for (unsigned int j = 0; j < circles.size(); ++j) {
+      int index = j + i * circles.size();
 
-      triangles.push_back(index);
-      triangles.push_back(index + 1 + circles.size());
-      triangles.push_back(index + 1);
+      triangles.push_back(index % vertices.size());
+      triangles.push_back((index + 1 + circles.size()) % vertices.size());
+     	triangles.push_back((index + 1) % vertices.size()); 
 
-      triangles.push_back(index);
-      triangles.push_back(index + circles.size());
-      triangles.push_back(index + 1 + circles.size());
+			triangles.push_back(index % vertices.size());
+      triangles.push_back((index + circles.size()) % vertices.size());
+			triangles.push_back((index + 1 + circles.size()) % vertices.size());
     }
   }
 
@@ -66,9 +62,9 @@ void Support::create(glm::vec3 p)
 
 void Support::render()
 {
-		ShaderProgram *main = Canvas::instance().shader_programs();
+	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
-	main->setUniform("toonify", false);
+	main->setUniform("toonify", true);
 	main->setUniform("texture_fragment", false);
 
 	// Set up a matrix stack
