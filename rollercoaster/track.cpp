@@ -41,15 +41,19 @@ void Track::create(Spline *spline)
 
 	for (unsigned int i = 0; i < spline->sampled_points().size() - 1; i++) {
 		Circle *circle = new Circle;
-		circle->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)), samples, 1.5f);
+		circle->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)), samples, 2.0f);
 		circles_.push_back(circle);
 
-		if(i % 20 == 0) {
+		if(i % (int) (spline->sampled_points().size() / 10) == 0) {
 			Support *support = new Support;
 			support->create(spline->sampled_points().at(i));
 			supports_.push_back(support);
 		}
 	}
+
+	Circle *circle = new Circle;
+	circle->create(new Frame(spline->sampled_points().at(0), spline->sampled_points().at(1)), samples, 2.0f);
+	circles_.push_back(circle);
 
 	for (int i = 0; i < samples; ++i) {
 		for (unsigned int j = 0; j < circles_.size(); ++j) {
