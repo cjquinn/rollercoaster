@@ -9,6 +9,7 @@
 
 // Canvas includes
 #include "camera.h"
+#include "cart.h"
 #include "lighting.h"
 #include "matrixstack.h"
 #include "shader.h"
@@ -20,7 +21,7 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
+  camera_(NULL), cart_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -29,6 +30,7 @@ Canvas::~Canvas()
 { 
   // Canvas objects
   delete camera_;
+	delete cart_;
   delete skybox_;
 	delete spline_gun_;
 	delete terrain_;
@@ -51,6 +53,7 @@ void Canvas::init()
 
   /// Create objects
   camera_ = new Camera;
+	cart_ = new Cart;
 	spline_gun_ = new SplineGun;
 	skybox_ = new Skybox;
 	terrain_ = new Terrain;
@@ -113,9 +116,10 @@ void Canvas::render()
 	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
 	
 	// Canvas renders
+	cart_->render();
 	skybox_->render();
-  terrain_->render();
 	spline_gun_->render();
+  terrain_->render();
 	if (render_track) {
 		track_->render();
 	}
@@ -127,6 +131,7 @@ void Canvas::render()
 void Canvas::update() 
 {
   camera_->update(dt_);
+	cart_->update(dt_);
 }
 
 WPARAM Canvas::exec() 
@@ -225,6 +230,7 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
 				case VK_RETURN:
 					track_->create(spline_gun_->spline());
 					render_track = true;
+					cart_->create(spline_gun_->spline());
 					//camera_->follow(spline_gun_->spline());
 					break;
       }

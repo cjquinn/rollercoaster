@@ -1,11 +1,9 @@
 Must do
 -------
-Create struts
-	- use circles start and finish
-	- start is point on track
-	- finish is just below ground
-Test textures
 Think up models for scene
+	- penguins
+Other objects
+	- billboard texture sign toon texture billboard!!
 Add camera functionality
 Day Time Night Time
 Implement Blur

@@ -93,6 +93,9 @@
     <ClInclude Include="support.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -165,6 +168,9 @@
       <Filter>Source Files\Basic Objects</Filter>
     </ClCompile>
     <ClCompile Include="support.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

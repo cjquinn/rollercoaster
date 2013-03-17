@@ -14,6 +14,7 @@ class Timer;
 
 // Canvas classes
 class Camera;
+class Cart;
 class Skybox;
 class SplineGun;
 class Terrain;
@@ -36,6 +37,7 @@ private:
 	std::vector<ShaderProgram *> shader_programs_;
 
   Camera *camera_;
+	Cart *cart_;
 	Skybox *skybox_;
 	SplineGun *spline_gun_;
 	Terrain *terrain_;

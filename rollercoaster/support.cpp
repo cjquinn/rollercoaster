@@ -21,7 +21,7 @@ void Support::create(glm::vec3 p)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
 
-	unsigned int samples = 4;
+	int samples = 4;
 
 	glm::vec3 f(p.x, Canvas::instance().terrain()->getTerrainHeight(p), p.z);
 
@@ -36,7 +36,7 @@ void Support::create(glm::vec3 p)
 	circles.push_back(start);
 	circles.push_back(end);
 
-	for (unsigned int i = 0; i < samples; ++i) {
+	for (int i = 0; i < samples; ++i) {
 		for (unsigned int j = 0; j < circles.size(); ++j) {
 			Vertex v(circles.at(j)->vertices().at(i), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
       vertices.push_back(v);
