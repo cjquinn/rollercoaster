@@ -15,6 +15,7 @@ class Timer;
 // Canvas classes
 class Camera;
 class Cart;
+class Penguins;
 class Skybox;
 class SplineGun;
 class Terrain;
@@ -38,6 +39,7 @@ private:
 
   Camera *camera_;
 	Cart *cart_;
+	Penguins *penguins_;
 	Skybox *skybox_;
 	SplineGun *spline_gun_;
 	Terrain *terrain_;

@@ -14,7 +14,7 @@ public:
 	void create(Spline *spline);
 
 	void render();
-	void update(float dt);
+	void update(double dt);
 private:
 	Frame *frame_;
 	ObjModel *model_;

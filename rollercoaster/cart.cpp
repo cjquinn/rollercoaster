@@ -13,7 +13,9 @@ Cart::Cart() : frame_(NULL), model_(NULL), spline_(NULL)
 
 Cart::~Cart()
 {
-	model_->release();
+	if (model_) {
+		model_->release();
+	}
 	delete model_;
 }
 
@@ -56,7 +58,7 @@ void Cart::render()
 	}
 }
 
-void Cart::update(float dt)
+void Cart::update(double dt)
 {
 	if(spline_) {
 		static float t = 0.0f;

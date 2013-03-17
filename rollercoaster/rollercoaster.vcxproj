@@ -19,6 +19,7 @@
     <ClInclude Include="frame.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="penguins.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shaderprogram.h" />
@@ -45,6 +46,7 @@
     <ClCompile Include="frame.cpp" />
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="penguins.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />

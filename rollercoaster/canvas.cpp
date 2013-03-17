@@ -12,6 +12,7 @@
 #include "cart.h"
 #include "lighting.h"
 #include "matrixstack.h"
+#include "penguins.h"
 #include "shader.h"
 #include "shaderprogram.h"
 #include "skybox.h"
@@ -21,7 +22,7 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), cart_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
+  camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -31,6 +32,7 @@ Canvas::~Canvas()
   // Canvas objects
   delete camera_;
 	delete cart_;
+	delete penguins_;
   delete skybox_;
 	delete spline_gun_;
 	delete terrain_;
@@ -54,6 +56,7 @@ void Canvas::init()
   /// Create objects
   camera_ = new Camera;
 	cart_ = new Cart;
+	penguins_ = new Penguins;
 	spline_gun_ = new SplineGun;
 	skybox_ = new Skybox;
 	terrain_ = new Terrain;
@@ -96,6 +99,8 @@ void Canvas::init()
 	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
 	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
+
+	penguins_->create(50, glm::vec3(100.0f, 0.0f, -200.0f));
 }
 
 void Canvas::render() 
@@ -117,6 +122,7 @@ void Canvas::render()
 	
 	// Canvas renders
 	cart_->render();
+	penguins_->render();
 	skybox_->render();
 	spline_gun_->render();
   terrain_->render();
