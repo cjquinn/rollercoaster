@@ -1,13 +1,10 @@
 Must do
 -------
-Think up models for scene
-	- penguins
 Other objects
 	- billboard texture sign toon texture billboard!!
 Add camera functionality
 Day Time Night Time
 Implement Blur
-Particles for clouds?
 
 Optional
 --------

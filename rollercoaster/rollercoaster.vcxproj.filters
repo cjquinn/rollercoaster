@@ -99,6 +99,12 @@
     <ClInclude Include="penguins.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="billboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cuboid.h">
+      <Filter>Header Files\Basic Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -178,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="penguins.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="billboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cuboid.cpp">
+      <Filter>Source Files\Basic Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

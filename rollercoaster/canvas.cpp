@@ -109,8 +109,6 @@ void Canvas::render()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
 
-	Lighting::white();
-
 	modelview_.setIdentity();
 	modelview_.lookAt(camera_->position(), camera_->view(), camera_->up_vector());
 

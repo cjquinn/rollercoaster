@@ -11,11 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="billboard.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="cart.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="canvas.h" />
+    <ClInclude Include="cuboid.h" />
     <ClInclude Include="frame.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
@@ -39,10 +41,12 @@
     <ClInclude Include="vbo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="billboard.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="cart.cpp" />
     <ClCompile Include="circle.cpp" />
+    <ClCompile Include="cuboid.cpp" />
     <ClCompile Include="frame.cpp" />
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
