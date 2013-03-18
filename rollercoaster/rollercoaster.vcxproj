@@ -17,12 +17,12 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="circle.h" />
     <ClInclude Include="canvas.h" />
-    <ClInclude Include="cuboid.h" />
     <ClInclude Include="frame.h" />
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="penguins.h" />
     <ClInclude Include="point.h" />
+    <ClInclude Include="quad.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shaderprogram.h" />
     <ClInclude Include="spline.h" />
@@ -46,12 +46,12 @@
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="cart.cpp" />
     <ClCompile Include="circle.cpp" />
-    <ClCompile Include="cuboid.cpp" />
     <ClCompile Include="frame.cpp" />
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="penguins.cpp" />
     <ClCompile Include="point.cpp" />
+    <ClCompile Include="quad.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
     <ClCompile Include="spline.cpp" />

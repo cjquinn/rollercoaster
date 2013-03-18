@@ -5,12 +5,13 @@
 #include "frame.h"
 #include "lighting.h"
 #include "matrixstack.h"
+#include "mesh.h"
 #include "shaderprogram.h"
 #include "support.h"
 #include "texture.h"
 #include "vertex.h"
 
-Track::Track() : texture_(NULL)
+Track::Track() : mesh_(NULL), texture_(NULL)
 {}
 
 Track::~Track()
@@ -24,10 +25,14 @@ Track::~Track()
     delete circles_.back();
     circles_.pop_back();
   }
+
+	delete mesh_;
 }
 
 void Track::create(Spline *spline) 
 {
+	mesh_ = new Mesh;
+
 	texture_ = new Texture;
 	texture_->load("resources\\textures\\metal.jpg");
 	texture_->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
@@ -76,7 +81,7 @@ void Track::create(Spline *spline)
     }
   }
 
-	mesh_.create(texture_, vertices, triangles);
+	mesh_->create(texture_, vertices, triangles);
 }
 
 void Track::render()
@@ -103,7 +108,7 @@ void Track::render()
 
 	modelview.push();
 	  main->setUniform("matrices.modelview", modelview.top());
-		mesh_.render();
+		mesh_->render();
 	modelview.pop();
 
 	for (unsigned int i = 0; i < supports_.size(); i++) {

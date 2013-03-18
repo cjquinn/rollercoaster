@@ -5,18 +5,23 @@
 #include "frame.h"
 #include "lighting.h"
 #include "matrixstack.h"
+#include "mesh.h"
 #include "shaderprogram.h"
 #include "terrain.h"
 #include "vertex.h"
 
-Support::Support()
+Support::Support() : mesh_(NULL)
 {}
 
 Support::~Support()
-{}
+{
+	delete mesh_;
+}
 
 void Support::create(glm::vec3 p)
 {
+	mesh_ = new Mesh;
+
 	std::vector<Circle*> circles;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
@@ -57,7 +62,7 @@ void Support::create(glm::vec3 p)
     }
   }
 
-	mesh_.create(vertices, triangles);
+	mesh_->create(vertices, triangles);
 }
 
 void Support::render()
@@ -82,6 +87,6 @@ void Support::render()
 
 	modelview.push();
 	  main->setUniform("matrices.modelview", modelview.top());
-		mesh_.render();
+		mesh_->render();
 	modelview.pop();
 }

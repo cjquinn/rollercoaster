@@ -8,6 +8,7 @@
 #include "window.h"
 
 // Canvas includes
+#include "billboard.h"
 #include "camera.h"
 #include "cart.h"
 #include "lighting.h"
@@ -22,7 +23,7 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
+  billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -30,6 +31,7 @@ Canvas::Canvas() :
 Canvas::~Canvas() 
 { 
   // Canvas objects
+	delete billboard_;
   delete camera_;
 	delete cart_;
 	delete penguins_;
@@ -54,6 +56,7 @@ void Canvas::init()
   glClearDepth(1.0f);
 
   /// Create objects
+	billboard_ = new Billboard;
   camera_ = new Camera;
 	cart_ = new Cart;
 	penguins_ = new Penguins;
@@ -100,6 +103,8 @@ void Canvas::init()
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
 	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
 
+	// Creates placed on terrain
+	billboard_->create(glm::vec3(0.0f));
 	penguins_->create(50, glm::vec3(100.0f, 0.0f, -200.0f));
 }
 
@@ -119,6 +124,7 @@ void Canvas::render()
 	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
 	
 	// Canvas renders
+	billboard_->render();
 	cart_->render();
 	penguins_->render();
 	skybox_->render();

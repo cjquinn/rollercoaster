@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#include "mesh.h"
+class Mesh;
 
 class Terrain
 {
@@ -26,7 +26,7 @@ private:
 	float size_x_;
 	float size_z_;
 
-	Mesh mesh_;
+	Mesh *mesh_;
 };
 
 #endif

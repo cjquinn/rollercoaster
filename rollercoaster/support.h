@@ -1,7 +1,9 @@
 #ifndef SUPPORT_H
 #define SUPPORT_H
 
-#include "mesh.h"
+#include "common.h"
+
+class Mesh;
 
 class Support
 {
@@ -14,7 +16,7 @@ public:
 	void render();
 
 private:
-	Mesh mesh_;
+	Mesh *mesh_;
 };
 
 #endif

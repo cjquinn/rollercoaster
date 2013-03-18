@@ -1,9 +1,10 @@
 Must do
 -------
-Other objects
-	- billboard texture sign toon texture billboard!!
+Create textures for billboards
+Create spotlights on billboards
 Add camera functionality
 Day Time Night Time
+
 Implement Blur
 
 Optional

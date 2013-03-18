@@ -1,10 +1,10 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include "mesh.h"
 #include "spline.h"
 
 class Circle;
+class Mesh;
 class Support;
 class Texture;
 
@@ -18,7 +18,7 @@ public:
 	void render();
 
 private:
-	Mesh mesh_;
+	Mesh *mesh_;
 
 	std::vector<Circle*> circles_;
 	std::vector<Support*> supports_;

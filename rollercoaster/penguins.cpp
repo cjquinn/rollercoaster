@@ -38,30 +38,30 @@ void Penguins::create(int n, glm::vec3 origin)
 void Penguins::render()
 {
 	ShaderProgram *main = Canvas::instance().shader_programs();
-		main->use();
-		main->setUniform("toonify", true);
-		main->setUniform("texture_fragment", true);
+	main->use();
+	main->setUniform("toonify", true);
+	main->setUniform("texture_fragment", true);
 
-		// Set up a matrix stack
-		glutil::MatrixStack modelview = Canvas::instance().modelview();
+	// Set up a matrix stack
+	glutil::MatrixStack modelview = Canvas::instance().modelview();
 
-		// Set light and materials in main shader program
-		glm::vec4 light_position(0, 100, 0, 1);
-		glm::vec4 light_eye = modelview.top() * light_position;
+	// Set light and materials in main shader program
+	glm::vec4 light_position(0, 100, 0, 1);
+	glm::vec4 light_eye = modelview.top() * light_position;
 
-		Lighting::set(
-			light_eye, 
-			glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-			glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(1.0f), glm::vec3(0.1f),
-			15.0f);
+	Lighting::set(
+		light_eye, 
+		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
+		glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(1.0f), glm::vec3(0.1f),
+		15.0f);
 
-		for(unsigned int i = 0; i < positions_.size(); i++) {
-			modelview.push();
-				modelview.translate(positions_.at(i));
-				modelview *= rotations_.at(i);
-				modelview.scale(scales_.at(i));
-				main->setUniform("matrices.modelview", modelview.top());
-				model_->render();
-			modelview.pop();
-		}
+	for(unsigned int i = 0; i < positions_.size(); i++) {
+		modelview.push();
+			modelview.translate(positions_.at(i));
+			modelview *= rotations_.at(i);
+			modelview.scale(scales_.at(i));
+			main->setUniform("matrices.modelview", modelview.top());
+			model_->render();
+		modelview.pop();
+	}
 }

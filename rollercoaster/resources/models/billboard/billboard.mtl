@@ -1,0 +1,13 @@
+# Blender MTL File: ''
+# Material Count: 1
+newmtl WH_untitled
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.655686 0.630588 0.605490
+Ks 0.409804 0.394118 0.378431
+Ni 1.000000
+d 1.000000
+illum 2
+map_Ka billboard.png
+
+

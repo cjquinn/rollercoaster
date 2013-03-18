@@ -13,6 +13,7 @@ class ShaderProgram;
 class Timer;
 
 // Canvas classes
+class Billboard;
 class Camera;
 class Cart;
 class Penguins;
@@ -37,6 +38,7 @@ private:
 	glutil::MatrixStack modelview_;
 	std::vector<ShaderProgram *> shader_programs_;
 
+	Billboard *billboard_;
   Camera *camera_;
 	Cart *cart_;
 	Penguins *penguins_;

@@ -170,7 +170,9 @@ void Mesh::render()
 // Release resources
 void Mesh::release()
 {
-  texture_->release();
-  glDeleteVertexArrays(1, &vao_);
+	if (texture_) {
+		texture_->release();
+	}
+	glDeleteVertexArrays(1, &vao_);
   vbo_.release();
 }

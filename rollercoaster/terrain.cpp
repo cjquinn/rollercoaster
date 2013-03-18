@@ -6,16 +6,17 @@
 #include "canvas.h"
 #include "lighting.h"
 #include "matrixstack.h"
+#include "mesh.h"
 #include "shaderprogram.h"
 #include "vertex.h"
 
-Terrain::Terrain()
-{
-}
+Terrain::Terrain() : mesh_(NULL)
+{}
 
 Terrain::~Terrain()
 {
 	delete[] heightmap_;
+	delete mesh_;
 }
 
 glm::vec3 Terrain::imageToWorld(glm::vec3 p)
@@ -42,6 +43,8 @@ glm::vec3 Terrain::worldToImage(glm::vec3 p)
 
 bool Terrain::create(char *filename, float size_x, float size_z, float scale)
 {
+	mesh_ = new Mesh;
+
 	FILE *file = fopen(filename, "r");
 	if(!file) {
 		return false;
@@ -98,7 +101,7 @@ bool Terrain::create(char *filename, float size_x, float size_z, float scale)
     }
   }
 
-  mesh_.create(vertices, triangles);
+  mesh_->create(vertices, triangles);
 
 	if (image) {
     if (image->data) {
@@ -144,6 +147,6 @@ void Terrain::render()
 
 	modelview.push();
 	  main->setUniform("matrices.modelview", modelview.top());
-		mesh_.render();
+		mesh_->render();
 	modelview.pop();
 }
