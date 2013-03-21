@@ -102,8 +102,9 @@ void Canvas::init()
 	terrain_->create("resources\\heightmap\\heightmap.bmp", glm::vec3(0.0f), 1024.0f, 1024.0f, 100.0f);
 
 	// Terrain dependent creates
-	billboard_->create(glm::vec3(0.0f));
-	penguins_->create(20, glm::vec3(100.0f, 0.0f, -200.0f));
+	billboard_->create(glm::vec3(350.0f, 0.0f, 130.0f));
+	penguins_->create(20, glm::vec3(-200.0f, 0.0f, -200.0f));
+	penguins_->create(20, glm::vec3(200.0f, 0.0f, 250.0f));
 
 	// Rollercoaster creates
 	track_->create("resources\\track\\main.csv");
@@ -126,8 +127,8 @@ void Canvas::render()
 	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
 	
 	// Canvas renders
-	//billboard_->render();
-	//penguins_->render();
+	billboard_->render();
+	penguins_->render();
 	skybox_->render();
   terrain_->render();
 	
@@ -235,10 +236,20 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
         case VK_ESCAPE:
           PostQuitMessage(0);
 					break;
-				case VK_SPACE:
+				case 0x31:
+					camera_->setState(FIRST_PERSON);
 					break;
-				case VK_RETURN:
-					camera_->follow(track_->spline());
+				case 0x32:
+					camera_->setState(SIDE_VIEW);
+					break;
+				case 0x33 :
+					camera_->setState(TOP_VIEW);
+					break;
+				case 0x34 :
+					camera_->setState(FREE_VIEW);
+					break;
+				case 0x35 :
+					camera_->setState(BILLBOARD);
 					break;
       }
     break;
@@ -268,9 +279,14 @@ void Canvas::setHInstance(HINSTANCE hinstance)
 }
 
 // Canvas object getters
-Camera *Canvas::camera() 
+Camera* Canvas::camera() 
 {
 	return camera_;
+}
+
+Cart* Canvas::cart()
+{
+	return cart_;
 }
 
 glutil::MatrixStack Canvas::modelview() 
@@ -278,12 +294,12 @@ glutil::MatrixStack Canvas::modelview()
 	return modelview_;
 }
 
-ShaderProgram *Canvas::shader_programs(int i) 
+ShaderProgram* Canvas::shader_programs(int i) 
 {
 	return shader_programs_[i];
 }
 
-Terrain *Canvas::terrain()
+Terrain* Canvas::terrain()
 {
 	return terrain_;
 }

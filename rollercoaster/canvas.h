@@ -25,9 +25,10 @@ class Canvas
 {
 public:
 	Camera *camera();
+	Cart* cart();
 	glutil::MatrixStack modelview();
-	ShaderProgram *shader_programs(int i = 0);
-	Terrain *terrain();
+	ShaderProgram* shader_programs(int i = 0);
+	Terrain* terrain();
 
 private:
 	void init();

@@ -60,7 +60,7 @@ void main()
 
 	if(toonify) {
 		// Find the edges
-		float edge_mask = (dot(v, normalize(eye_normal)) > 0.2) ? 1 : 0;
+		float edge_mask = (dot(v, normalize(eye_normal)) > 0.1) ? 1 : 0;
 
 		// Levels of colour
 		int levels = 8;

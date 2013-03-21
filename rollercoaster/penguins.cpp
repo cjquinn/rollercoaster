@@ -18,8 +18,10 @@ Penguins::~Penguins()
 
 void Penguins::create(int n, glm::vec3 origin)
 {
-	model_ = new ObjModel;
-	model_->load("resources\\models\\penguin\\penguin.obj", "penguin.mtl");
+	if(!model_) {
+		model_ = new ObjModel;
+		model_->load("resources\\models\\penguin\\penguin.obj", "penguin.mtl");
+	}
 
 	for (int i = 0; i < n/2; i++) {
 		for (int j = 0; j < n/2; j++) { 
@@ -28,7 +30,7 @@ void Penguins::create(int n, glm::vec3 origin)
 			float y = Canvas::instance().terrain()->groundHeight(p);
 			positions_.push_back(glm::vec3(p.x, y, p.z));
 			Frame frame(positions_.at(i), glm::vec3(positions_.at(i*j).x + (rand() % 10 + 1) * 0.1, positions_.at(i*j).y, positions_.at(i*j).z + (rand() % 10 + 1) * 0.1));
-			rotations_.push_back(glm::mat4(glm::mat3(frame.t(), frame.b(), frame.n())));
+			rotations_.push_back(glm::mat4(glm::mat3(frame.t(), glm::vec3(0.0f, 1.0f, 0.0f), frame.n())));
 			//fix this
 			scales_.push_back((rand() % 10 + 5) * 0.1f);
 		}

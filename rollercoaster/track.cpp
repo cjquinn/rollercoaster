@@ -65,7 +65,7 @@ void Track::create(std::string track)
 		circle->create(new Frame(spline_->sampled_points().at(i), spline_->sampled_points().at(i+1)), samples, 2.0f);
 		circles_.push_back(circle);
 
-		if(i % (int) (spline_->sampled_points().size() / 10) == 0) {
+		if(i % (int) (spline_->sampled_points().size() / 50) == 0) {
 			Support *support = new Support;
 			support->create(spline_->sampled_points().at(i));
 			supports_.push_back(support);

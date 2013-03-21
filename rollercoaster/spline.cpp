@@ -74,7 +74,7 @@ void Spline::create(const std::vector<glm::vec3> &points)
 	computeLength();
 	float total_length = distances_[distances_.size() - 1];
 
-	float spacing = 2;
+	float spacing = 4;
 	float n = total_length / spacing;
 
 

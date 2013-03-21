@@ -13,6 +13,7 @@ Cart::Cart() : frame_(NULL), model_(NULL), spline_(NULL)
 
 Cart::~Cart()
 {
+	delete frame_;
 	delete model_;
 }
 
@@ -66,4 +67,9 @@ void Cart::update(double dt)
 
 		frame_ = new Frame(p, q);
 	}
+}
+
+Frame* Cart::frame()
+{
+	return frame_;
 }

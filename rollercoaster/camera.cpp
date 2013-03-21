@@ -6,14 +6,15 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "canvas.h"
+#include "cart.h"
 #include "frame.h"
-#include "spline.h"
 #include "window.h"
 
 // Constructor for camera -- initialise with some default values
 Camera::Camera() :
-  position_(glm::vec3(0.0f, 10.0f, 100.0f)), view_(glm::vec3(0.0f, 0.0f, 0.0f)),
-  up_vector_(glm::vec3(0.0f, 1.0f, 0.0f)), speed_(0.025f), spline_(NULL)//, b_(0.0f, 1.0f, 0.0f)
+  position_(glm::vec3(352.065948f, 110.0f, 177.996780f)), view_(glm::vec3(349.362854f, 155.424336f, -183.370804f)),
+  up_vector_(glm::vec3(0.0f, 1.0f, 0.0f)), speed_(0.025f), state_(FREE_VIEW)
 {
 }
  
@@ -49,7 +50,6 @@ void Camera::setViewByMouse()
 
   rotation_x -= angle_z;
 
-  // Just a little bit below PI / 2 -- Sam: should be a #define / const / enum?
   float max_angle = 1.56f;
 
   if (rotation_x > max_angle) {
@@ -102,30 +102,34 @@ void Camera::advance(double direction)
 // Update the camera to respond to mouse motion for rotations and keyboard for translation
 void Camera::update(double dt)
 {
-  glm::vec3 cross = glm::cross(view_ - position_, up_vector_);
-  strafe_vector_ = glm::normalize(cross);
-
-	if(!spline_) {
+	if (state_ == FREE_VIEW) {
 		setViewByMouse();
 		translateByKeyboard(dt);
-	}else{
-		static float t = 0.0f;
-		t += 0.005f * (float) dt;
+		
+		glm::vec3 cross = glm::cross(view_ - position_, up_vector_);
+		strafe_vector_ = glm::normalize(cross);
+	} else {
+		if (state_ == BILLBOARD) {
+			position_ = glm::vec3(352.065948f, 110.0f, 177.996780f);
+			view_ = glm::vec3(349.362854f, 155.424336f, -183.370804f);
+		}
+		else if (state_ == TOP_VIEW) {
+			position_ = glm::vec3(46.9f, 809.5f, 7.6f);
+			view_ = glm::vec3(37.3f, 12.2f, 72.5f);
+		} else {
+			static float t = 0.0f;
+			t += 0.005f * (float) dt;
 
-		glm::vec3 p = spline_->pointAt(t);
-		glm::vec3 q = spline_->pointAt(t += 0.05f * (float) dt);
+			Frame *frame = Canvas::instance().cart()->frame();
 
-		Frame frame(p, q);
-
-		//glm::vec3 n = glm::normalize(glm::cross(frame.t(), b_));
-		//glm::vec3 b = glm::normalize(glm::cross(n, frame.t())); 
-
-		//b_ = b;
-
-		position_ = frame.p() + 10.0f * frame.b() - frame.t() * 10.0f;
-		view_ = frame.p() + 30.0f * frame.t();
-
-		//up_vector_ = b_;
+			if (state_ == FIRST_PERSON) {
+				position_ = frame->p() + 5.0f * frame->b() - frame->t() * 0.5f;
+				view_ = frame->p() + 30.0f * frame->t();
+			} else {
+				position_ = frame->p() + frame->t() * 2.5f + frame->b() * 10.0f + frame->n() * 10.0f;
+				view_ = frame->p() + frame->t() * 2.5f;
+			}
+		}
 	}
 }
 
@@ -210,7 +214,7 @@ glm::mat3 Camera::normal(const glm::mat4 &modelview)
   return glm::transpose(glm::inverse(glm::mat3(modelview)));
 }
 
-void Camera::follow(Spline *spline)
+void Camera::setState(State state)
 {
-	spline_= spline;
+	state_ = state;
 }

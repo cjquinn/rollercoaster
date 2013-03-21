@@ -1,10 +1,5 @@
 Must do
 -------
-Add camera functionality
-
-Finanlise layout!
- - once done sort out keybindings rendering of track ext!
-
 Create textures for billboards
 Create spotlights on billboards
 Day Time Night Time

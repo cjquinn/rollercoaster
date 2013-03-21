@@ -6,6 +6,14 @@
 
 class Spline;
 
+enum State {
+	FREE_VIEW,
+	FIRST_PERSON,
+	SIDE_VIEW,
+	TOP_VIEW,
+	BILLBOARD
+};
+
 class Camera 
 {
 public:
@@ -60,8 +68,8 @@ public:
 
   glm::mat3 normal(const glm::mat4 &modelview);
 
-	// Follow spline
-	void follow(Spline *spline);
+
+	void setState(State state);
 
 private:
   // The position of the camera's centre of projection
@@ -85,9 +93,9 @@ private:
   // Orthographic projection matrix
   glm::mat4 orthographic_;
 
-	Spline *spline_;
-
 	glm::vec3 b_;
+
+	State state_;
 };
 
 #endif

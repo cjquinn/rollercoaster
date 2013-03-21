@@ -15,6 +15,9 @@ public:
 
 	void render();
 	void update(double dt);
+
+	Frame* frame();
+
 private:
 	Frame *frame_;
 	ObjModel *model_;
