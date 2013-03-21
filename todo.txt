@@ -1,5 +1,7 @@
 Must do
 -------
+fix supports
+
 Render to texture for billboard
 
 Textures for ground and track....... lame........

@@ -115,7 +115,7 @@ void Camera::update(double dt)
 		}
 		else if (state_ == TOP_VIEW) {
 			position_ = glm::vec3(46.9f, 809.5f, 7.6f);
-			view_ = glm::vec3(37.3f, 12.2f, 72.5f);
+			view_ = glm::vec3(43.24f, 12.749f, 79.489f);
 		} else {
 			static float t = 0.0f;
 			t += 0.005f * (float) dt;
