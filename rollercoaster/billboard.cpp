@@ -50,7 +50,7 @@ void Billboard::render()
 		glm::vec3(0.352f, 0.443f, 0.654f), glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(0.1f),
 		15.0f);
 
-	float y = Canvas::instance().terrain()->getTerrainHeight(frame_->p());
+	float y = Canvas::instance().terrain()->groundHeight(frame_->p());
 
 	modelview.push();
 		modelview.translate(glm::vec3(frame_->p().x, y, frame_->p().z));

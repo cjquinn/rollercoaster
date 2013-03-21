@@ -26,11 +26,12 @@ void Penguins::create(int n, glm::vec3 origin)
 		for (int j = 0; j < n/2; j++) { 
 			glm::vec3 p(rand() % 100 + j, 0.0f,rand() % 100 + i);
 			p += origin;
-			float y = Canvas::instance().terrain()->getTerrainHeight(p);
+			float y = Canvas::instance().terrain()->groundHeight(p);
 			positions_.push_back(glm::vec3(p.x, y, p.z));
 			Frame frame(positions_.at(i), glm::vec3(positions_.at(i*j).x + (rand() % 10 + 1) * 0.1, positions_.at(i*j).y, positions_.at(i*j).z + (rand() % 10 + 1) * 0.1));
 			rotations_.push_back(glm::mat4(glm::mat3(frame.t(), frame.b(), frame.n())));
-			scales_.push_back((float) (rand() % 10 + 1) * 0.1);
+			//fix this
+			scales_.push_back((rand() % 10 + 5) * 0.1f);
 		}
 	}
 }

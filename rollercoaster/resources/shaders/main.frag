@@ -60,10 +60,10 @@ void main()
 
 	if(toonify) {
 		// Find the edges
-		float edge_mask = (dot(v, normalize(eye_normal)) > 0.045) ? 1 : 0;
+		float edge_mask = (dot(v, normalize(eye_normal)) > 0.2) ? 1 : 0;
 
 		// Levels of colour
-		int levels = 5;
+		int levels = 10;
 		fragment_colour = vec4((floor(light_colour.rgb * levels) / levels) * edge_mask, light_colour.w);
 	}else{
 		fragment_colour = light_colour;

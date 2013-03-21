@@ -28,7 +28,7 @@ void Support::create(glm::vec3 p)
 
 	int samples = 4;
 
-	glm::vec3 f(p.x, Canvas::instance().terrain()->getTerrainHeight(p), p.z);
+	glm::vec3 f(p.x, Canvas::instance().terrain()->groundHeight(p), p.z);
 
 	Circle *start, *end;
 
@@ -43,7 +43,7 @@ void Support::create(glm::vec3 p)
 
 	for (int i = 0; i < samples; ++i) {
 		for (unsigned int j = 0; j < circles.size(); ++j) {
-			Vertex v(circles.at(j)->vertices().at(i), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
+			Vertex v(circles.at(j)->vertices().at(i), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
       vertices.push_back(v);
 		}
 	}

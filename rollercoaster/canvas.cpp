@@ -101,11 +101,11 @@ void Canvas::init()
 
 	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
-	terrain_->create("resources\\heightmap\\heightmap.bmp", 2048.0f, 2048.0f, 40.0f);
+	terrain_->create("resources\\heightmap\\heightmap_2.bmp", glm::vec3(0.0f), 512.0f, 512.0f, 100.0f);
 
 	// Creates placed on terrain
 	billboard_->create(glm::vec3(0.0f));
-	penguins_->create(50, glm::vec3(100.0f, 0.0f, -200.0f));
+	penguins_->create(20, glm::vec3(100.0f, 0.0f, -200.0f));
 }
 
 void Canvas::render() 
@@ -124,12 +124,13 @@ void Canvas::render()
 	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
 	
 	// Canvas renders
-	billboard_->render();
-	cart_->render();
+	//billboard_->render();
+	//cart_->render();
 	penguins_->render();
 	skybox_->render();
 	spline_gun_->render();
   terrain_->render();
+	
 	if (render_track) {
 		track_->render();
 	}

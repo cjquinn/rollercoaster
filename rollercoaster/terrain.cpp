@@ -1,66 +1,103 @@
 #include "terrain.h"
 
-#include "include/gl/glew.h"
-#include "include/gl/glaux.h"
+#include "include\freeimage\freeimage.h"
 
 #include "canvas.h"
 #include "lighting.h"
 #include "matrixstack.h"
 #include "mesh.h"
 #include "shaderprogram.h"
+#include "texture.h"
 #include "vertex.h"
 
-Terrain::Terrain() : mesh_(NULL)
+Terrain::Terrain() : dib_(NULL), mesh_(NULL), texture_(NULL)
 {}
 
 Terrain::~Terrain()
 {
-	delete[] heightmap_;
-	delete mesh_;
+	delete [] heightmap_;
 }
 
 glm::vec3 Terrain::imageToWorld(glm::vec3 p)
 {
-  p.x = 2.0f * (p.x / width_) - 1.0f;
-  p.z = 2.0f * (p.z / height_) - 1.0f;
+	p.x = 2.0f * (p.x / width_) - 1.0f;
+	p.z = 2.0f * (p.z / height_) - 1.0f;
 
-  p.x *= size_x_ / 2.0f;
-  p.z *= size_z_ / 2.0f;
+	p.x *= size_x_ / 2.0f;
+	p.z *= size_z_ / 2.0f;
 
-  return p;
+	p += origin_;
+
+	return p;
+
 }
 
 glm::vec3 Terrain::worldToImage(glm::vec3 p)
 {
-  p.x *= 2.0f / size_x_;
-  p.z *= 2.0f / size_z_;
+	p -= origin_;
 
-  p.x = p.x + 1.0f * (width_ / 2.0f);
-  p.z = p.z + 1.0f * (height_ / 2.0f);
+	p.x *= 2.0f / size_x_;
+	p.z *= 2.0f / size_z_;
 
-  return p;
+	p.x = (p.x + 1.0f) * (width_ / 2.0f);
+	p.z = (p.z + 1.0f) * (height_ / 2.0f);
+
+	return p;
 }
 
-bool Terrain::create(char *filename, float size_x, float size_z, float scale)
+bool Terrain::imageBytes(char *heightmap, BYTE **data_pointer, unsigned int &width, unsigned int &height)
+{
+	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+	fif = FreeImage_GetFileType(heightmap, 0);
+
+	if(fif == FIF_UNKNOWN) {
+		fif = FreeImage_GetFIFFromFilename(heightmap);
+	}
+
+	if(fif == FIF_UNKNOWN) {
+		return false;
+	}
+
+	if(FreeImage_FIFSupportsReading(fif))
+		dib_ = FreeImage_Load(fif, heightmap);
+
+	if(!dib_) {
+		char message[1024];
+		sprintf_s(message, "Cannot load image\n%s\n", heightmap);
+		MessageBox(NULL, message, "Error", MB_ICONERROR);
+		return false;
+	}
+
+	*data_pointer = FreeImage_GetBits(dib_);
+	width = FreeImage_GetWidth(dib_);
+	height = FreeImage_GetHeight(dib_);
+
+	if(data_pointer == NULL || width == 0 || height == 0) { 
+		return false;
+	}
+
+	return true;
+}
+
+bool Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size_z, float scale)
 {
 	mesh_ = new Mesh;
 
-	FILE *file = fopen(filename, "r");
-	if(!file) {
+	BYTE *data_pointer;
+	unsigned int width, height;
+
+	if (imageBytes(heightmap, &data_pointer, width, height) == false) {
 		return false;
 	}
-	fclose(file);
-	
-	AUX_RGBImageRec* image;
-	image = auxDIBImageLoad(filename);
 
-	width_ = image->sizeX;
-	height_ = image->sizeY;
+	width_ = width;
+	height_ = height;
+	origin_ = origin;
 	size_x_ = size_x;
 	size_z_ = size_z;
-
+	
 	heightmap_ = new float[width_ * height_];
-	if(heightmap_ == NULL) {
+	if (heightmap_ == NULL) {
 		return false;
 	}
 
@@ -69,60 +106,69 @@ bool Terrain::create(char *filename, float size_x, float size_z, float scale)
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
 
-	for (int z = 0; z < height_; ++z) {
-    for (int x = 0; x < width_; ++x) {
-      int index = x + z * width_;
+	for (int z = 0; z < height_; z++) {
+		for (int x = 0; x < width_; x++) {
+			int index = x + z * width_;
 
-      float grayscale = (image->data[index * 3] + image->data[index * 3 + 1] + image->data[index * 3 + 2]) / 3.0f;
-      float height = (grayscale - 128.0f) / 128.0f;
+			float grayscale = (data_pointer[index * 3] + data_pointer[index * 3 + 1] + data_pointer[index * 3 + 2]) / 3.0f;
+			float height = (grayscale - 128.0f) / 128.0f;
 
-      glm::vec3 pixel = glm::vec3((float) x, height, (float) z);
-      glm::vec3 world = imageToWorld(pixel);
-   
-			world.y *= scale;
-      heightmap_[index] = world.y;
+			glm::vec3 image = glm::vec3(x, height, z);
+			glm::vec3 world = imageToWorld(image);
 
-      Vertex v(world, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
-      vertices.push_back(v);
-    }
-  }
+			world.y *= scale;	 
+			heightmap_[index] = world.y;
 
-  for (int z = 0; z < height_ - 1; ++z) {
-    for (int x = 0; x < width_ - 1; ++x) {
-      int index = x + z * width_;
-
-      triangles.push_back(index);
-      triangles.push_back(index + 1 + width_);
-      triangles.push_back(index + 1);
-
-      triangles.push_back(index);
-      triangles.push_back(index + width_);
-      triangles.push_back(index + 1 + width_);
-    }
-  }
-
-  mesh_->create(vertices, triangles);
-
-	if (image) {
-    if (image->data) {
-      free(image->data);
-    }
-    free(image);
+			Vertex v = Vertex(world, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0, 0.0));
+			vertices.push_back(v);
+		}
 	}
 
-  return true;
+	FreeImage_Unload(dib_);
+
+	for (int z = 0; z < height_ - 1; z++) {
+		for (int x = 0; x < width_ - 1; x++) {
+			int index = x + z * width;
+			
+			triangles.push_back(index);
+			triangles.push_back(index + 1 + width_);
+			triangles.push_back(index + 1);
+
+			triangles.push_back(index);
+			triangles.push_back(index + width_);
+			triangles.push_back(index + 1 + width_);
+		}
+	}
+
+	mesh_->create(vertices, triangles);
+
+	return true;
 }
 
-float Terrain::getTerrainHeight(glm::vec3 p)
+float Terrain::groundHeight(glm::vec3 p)
 {
-  glm::vec3 image = worldToImage(p);
+	glm::vec3 image = worldToImage(p);
 
-  int index = (int) (image.x + 0.5) + (int) (image.z + 0.5) * width_;
-  if (index < 0 || index > width_ * height_) {
-    return 0.0f;
-  } else {
-    return heightmap_[index];
-  }
+	int x = (int) floor(image.x);
+	int z = (int) floor (image.z);
+	
+	if (x < 0 || x >= width_ - 1 || z < 0 || z >= height_ -1)
+		return 0.0f;
+	// Get the indices of four pixels around the current point 
+	int indexl = x + z * width_;
+	int indexr = (x+1) + z * width_;
+	int indexul = x + (z+1) * width_;
+	int indexur = (x+1) + (z+1) * width_;
+
+	// Interpolation amounts in x and z
+	float dx = image.x - x;
+	float dz = image.z - z;
+
+	// Interpolate -- first in x and and then in z
+	float a = (1-dx) * heightmap_[indexl] + dx * heightmap_[indexr];
+	float b = (1-dx) * heightmap_[indexul] + dx * heightmap_[indexur];
+	float c = (1-dz) * a + dz * b;
+	return c;
 }
 
 void Terrain::render()
