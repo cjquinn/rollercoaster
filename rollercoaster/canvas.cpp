@@ -23,7 +23,7 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL), render_track(false), 
+  billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL),
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -101,11 +101,15 @@ void Canvas::init()
 
 	// Canvas creates
   skybox_->create("resources\\skyboxes\\toon_snow\\", "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
-	terrain_->create("resources\\heightmap\\heightmap_2.bmp", glm::vec3(0.0f), 512.0f, 512.0f, 100.0f);
+	terrain_->create("resources\\heightmap\\heightmap.bmp", glm::vec3(0.0f), 1024.0f, 1024.0f, 100.0f);
 
-	// Creates placed on terrain
+	// Terrain dependent creates
 	billboard_->create(glm::vec3(0.0f));
 	penguins_->create(20, glm::vec3(100.0f, 0.0f, -200.0f));
+
+	// Rollercoaster creates
+	track_->create("resources\\track\\track.txt");
+	cart_->create(track_->spline());
 }
 
 void Canvas::render() 
@@ -125,15 +129,14 @@ void Canvas::render()
 	
 	// Canvas renders
 	//billboard_->render();
-	//cart_->render();
-	penguins_->render();
+	//penguins_->render();
 	skybox_->render();
 	spline_gun_->render();
   terrain_->render();
 	
-	if (render_track) {
-		track_->render();
-	}
+	// Rollercoaster renders
+	track_->render();
+	cart_->render();
 
   // Swap buffers to show the rendered image
   SwapBuffers(window_.hdc());    
@@ -239,10 +242,7 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
 					spline_gun_->addPoint(camera_->position());
 					break;
 				case VK_RETURN:
-					track_->create(spline_gun_->spline());
-					render_track = true;
-					cart_->create(spline_gun_->spline());
-					//camera_->follow(spline_gun_->spline());
+					spline_gun_->save();
 					break;
       }
     break;

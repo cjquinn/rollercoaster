@@ -63,7 +63,7 @@ void main()
 		float edge_mask = (dot(v, normalize(eye_normal)) > 0.2) ? 1 : 0;
 
 		// Levels of colour
-		int levels = 10;
+		int levels = 8;
 		fragment_colour = vec4((floor(light_colour.rgb * levels) / levels) * edge_mask, light_colour.w);
 	}else{
 		fragment_colour = light_colour;

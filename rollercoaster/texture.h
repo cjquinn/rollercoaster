@@ -22,6 +22,7 @@ class Texture
 {
 public:
   Texture();
+	~Texture();
 
   void createFromData(BYTE *data, int width, int height, int bpp, GLenum format, bool mipmaps = false);
   bool load(std::string path, bool mipmaps = false);
@@ -37,8 +38,6 @@ public:
   int width();
   int height();
   int bpp();
-
-  void release();
 
 private:
   int width_;

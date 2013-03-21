@@ -2,7 +2,6 @@
 #define MESH_H
 
 #include "common.h"
-#include "texture.h"
 #include "vbo.h"
 
 class Vertex;
@@ -19,7 +18,6 @@ public:
 	~Mesh();
 
 	void create(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles);
-	void create(Texture *texture, const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles);
 	
 	void computeVertexNormals();
 	glm::vec3 computeTriangleNormal(unsigned int id);
@@ -27,13 +25,10 @@ public:
 	void computeTextureCoords();
 	
 	void render();
-	void release();
 
 private:
 	UINT vao_;
   VBO vbo_;
-
-  Texture *texture_;
 
 	std::vector<Vertex> vertices_;
   std::vector<unsigned int> triangles_;

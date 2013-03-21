@@ -13,7 +13,6 @@ Penguins::Penguins() : model_(NULL)
 
 Penguins::~Penguins()
 {
-	model_->release();
 	delete model_;
 }
 

@@ -13,9 +13,6 @@ Cart::Cart() : frame_(NULL), model_(NULL), spline_(NULL)
 
 Cart::~Cart()
 {
-	if (model_) {
-		model_->release();
-	}
 	delete model_;
 }
 

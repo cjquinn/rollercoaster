@@ -45,8 +45,10 @@ glm::vec3 Terrain::worldToImage(glm::vec3 p)
 	return p;
 }
 
-bool Terrain::imageBytes(char *heightmap, BYTE **data_pointer, unsigned int &width, unsigned int &height)
+void Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size_z, float scale)
 {
+	mesh_ = new Mesh;
+
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	fif = FreeImage_GetFileType(heightmap, 0);
 
@@ -54,52 +56,17 @@ bool Terrain::imageBytes(char *heightmap, BYTE **data_pointer, unsigned int &wid
 		fif = FreeImage_GetFIFFromFilename(heightmap);
 	}
 
-	if(fif == FIF_UNKNOWN) {
-		return false;
-	}
+	dib_ = FreeImage_Load(fif, heightmap);
+	BYTE *data_pointer = FreeImage_GetBits(dib_);
 
-	if(FreeImage_FIFSupportsReading(fif))
-		dib_ = FreeImage_Load(fif, heightmap);
+	width_ = FreeImage_GetWidth(dib_);
+	height_ = FreeImage_GetHeight(dib_);
 
-	if(!dib_) {
-		char message[1024];
-		sprintf_s(message, "Cannot load image\n%s\n", heightmap);
-		MessageBox(NULL, message, "Error", MB_ICONERROR);
-		return false;
-	}
-
-	*data_pointer = FreeImage_GetBits(dib_);
-	width = FreeImage_GetWidth(dib_);
-	height = FreeImage_GetHeight(dib_);
-
-	if(data_pointer == NULL || width == 0 || height == 0) { 
-		return false;
-	}
-
-	return true;
-}
-
-bool Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size_z, float scale)
-{
-	mesh_ = new Mesh;
-
-	BYTE *data_pointer;
-	unsigned int width, height;
-
-	if (imageBytes(heightmap, &data_pointer, width, height) == false) {
-		return false;
-	}
-
-	width_ = width;
-	height_ = height;
 	origin_ = origin;
 	size_x_ = size_x;
 	size_z_ = size_z;
 	
 	heightmap_ = new float[width_ * height_];
-	if (heightmap_ == NULL) {
-		return false;
-	}
 
 	memset(heightmap_, 0, width_ * height_ * sizeof(float));
 
@@ -128,7 +95,7 @@ bool Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size
 
 	for (int z = 0; z < height_ - 1; z++) {
 		for (int x = 0; x < width_ - 1; x++) {
-			int index = x + z * width;
+			int index = x + z * width_;
 			
 			triangles.push_back(index);
 			triangles.push_back(index + 1 + width_);
@@ -141,8 +108,6 @@ bool Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size
 	}
 
 	mesh_->create(vertices, triangles);
-
-	return true;
 }
 
 float Terrain::groundHeight(glm::vec3 p)
@@ -152,19 +117,18 @@ float Terrain::groundHeight(glm::vec3 p)
 	int x = (int) floor(image.x);
 	int z = (int) floor (image.z);
 	
-	if (x < 0 || x >= width_ - 1 || z < 0 || z >= height_ -1)
+	if (x < 0 || x >= width_ - 1 || z < 0 || z >= height_ - 1) {
 		return 0.0f;
-	// Get the indices of four pixels around the current point 
+	}
+
 	int indexl = x + z * width_;
 	int indexr = (x+1) + z * width_;
 	int indexul = x + (z+1) * width_;
 	int indexur = (x+1) + (z+1) * width_;
 
-	// Interpolation amounts in x and z
 	float dx = image.x - x;
 	float dz = image.z - z;
 
-	// Interpolate -- first in x and and then in z
 	float a = (1-dx) * heightmap_[indexl] + dx * heightmap_[indexr];
 	float b = (1-dx) * heightmap_[indexul] + dx * heightmap_[indexur];
 	float c = (1-dz) * a + dz * b;

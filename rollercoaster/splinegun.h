@@ -3,7 +3,6 @@
 
 #include "common.h"
 
-class Point;
 class Spline;
 
 class SplineGun
@@ -18,8 +17,10 @@ public:
 
 	Spline *spline();
 
+	void save();
+
 private:
-	std::vector<Point*> points_;
+	std::vector<glm::vec3> points_;
 	Spline *spline_;
 };
 

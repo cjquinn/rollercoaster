@@ -1,12 +1,12 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include "spline.h"
+#include "common.h"
 
 class Circle;
 class Mesh;
+class Spline;
 class Support;
-class Texture;
 
 class Track
 {
@@ -14,16 +14,17 @@ public:
 	Track();
 	~Track();
 
-	void create(Spline *spline);
-	void render();
+	void create(std::string track);
+	void render(); 
+
+	Spline* spline();
 
 private:
-	Mesh *mesh_;
-
 	std::vector<Circle*> circles_;
 	std::vector<Support*> supports_;
 
-	Texture *texture_;
+	Mesh *mesh_;
+	Spline *spline_;
 };
 
 #endif

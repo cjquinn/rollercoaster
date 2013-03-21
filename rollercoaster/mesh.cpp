@@ -2,13 +2,13 @@
 
 #include "vertex.h"
 
-Mesh::Mesh() : texture_(NULL)
-{
-}
+Mesh::Mesh()
+{}
 
 Mesh::~Mesh()
 {
-	delete texture_;
+	glDeleteVertexArrays(1, &vao_);
+  vbo_.release();
 }
 
 glm::vec3 Mesh::computeTriangleNormal(unsigned int id)
@@ -69,55 +69,6 @@ void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigne
   }
 
   computeVertexNormals();
-
-	// Use VAO to store state associated with vertices
-  glGenVertexArrays(1, &vao_);
-  glBindVertexArray(vao_);
-
-  // Create a VBO
-  vbo_.create();
-  vbo_.bind();
-
-  // A colour
-  //glm::vec3 colour = glm::vec3(0.0f, 1.0f, 0.0f);
-
-  // Put the vertex attributes in the VBO
-  for (unsigned int i = 0; i < vertices_.size(); ++i) {
-    vbo_.addData(&vertices_[i].position, sizeof(glm::vec3));
-		vbo_.addData(&vertices_[i].texture, sizeof(glm::vec2));
-		vbo_.addData(&vertices_[i].normal, sizeof(glm::vec3));
-  }
-	
-  // Upload the VBO to the GPU
-  vbo_.uploadDataToGPU(GL_STATIC_DRAW);
-
-  // Set the vertex attribute locations
-  GLsizei stride = 2 * sizeof(glm::vec3) + sizeof(glm::vec2);
-
-  // Vertex positions
-  glEnableVertexAttribArray(0);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, 0);
-
-  // Normal vectors
-  glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*) (sizeof(glm::vec3) + sizeof(glm::vec2)));
-}
-
-void Mesh::create(Texture *texture, const std::vector<Vertex> &vertices, const std::vector<unsigned int> &triangles)
-{
-	texture_ = texture;
-  vertices_ = vertices;
-  triangles_ = triangles;
-
-  on_triangle_.resize(vertices_.size());
-  unsigned int count = (unsigned int) (triangles_.size() / 3);
-  for (unsigned int i = 0; i < count; ++i) {
-    on_triangle_[triangles_[i * 3]].id.push_back(i);
-    on_triangle_[triangles_[i * 3 + 1]].id.push_back(i);
-    on_triangle_[triangles_[i * 3 + 2]].id.push_back(i);
-  }
-
-  computeVertexNormals();
   computeTextureCoords();
 
 	// Use VAO to store state associated with vertices
@@ -161,18 +112,5 @@ void Mesh::create(Texture *texture, const std::vector<Vertex> &vertices, const s
 void Mesh::render()
 {
   glBindVertexArray(vao_);
-	if(texture_) {	
-		texture_->bind();
-	}
 	glDrawElements(GL_TRIANGLES, triangles_.size(), GL_UNSIGNED_INT, &triangles_[0]);
-}
-
-// Release resources
-void Mesh::release()
-{
-	if (texture_) {
-		texture_->release();
-	}
-	glDeleteVertexArrays(1, &vao_);
-  vbo_.release();
 }

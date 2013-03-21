@@ -18,6 +18,7 @@ public:
 
 	glm::vec3 pointAt(float d);
 
+	std::vector<glm::vec3> points();
 	std::vector<glm::vec3> sampled_points();
 
 private:

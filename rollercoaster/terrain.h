@@ -13,7 +13,7 @@ public:
 	Terrain();
 	~Terrain();
 
-	bool create(char *heightmap, glm::vec3 origin, float size_x, float size_z, float scale);
+	void create(char *heightmap, glm::vec3 origin, float size_x, float size_z, float scale);
 	float groundHeight(glm::vec3 p);
 	
 	void render();
@@ -21,7 +21,6 @@ public:
 private:
 	glm::vec3 worldToImage(glm::vec3 p);
 	glm::vec3 imageToWorld(glm::vec3 p);
-	bool imageBytes(char *heightmap, BYTE **data_pointer, unsigned int &width, unsigned int &height);
 
 	int width_, height_;
 	float *heightmap_;

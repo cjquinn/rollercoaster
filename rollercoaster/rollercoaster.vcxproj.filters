@@ -75,9 +75,6 @@
     <ClInclude Include="spline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sphere.h">
       <Filter>Header Files\Basic Objects</Filter>
     </ClInclude>
@@ -161,9 +158,6 @@
     <ClCompile Include="spline.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="point.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files\Basic Objects</Filter>
     </ClCompile>
@@ -208,5 +202,10 @@
     <None Include="resources\shaders\main.vert">
       <Filter>Shader Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\recource_references.txt">
+      <Filter>Info Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

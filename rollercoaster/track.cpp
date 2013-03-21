@@ -1,5 +1,11 @@
 #include "track.h"
 
+#include <iostream>
+#include <fstream>
+
+#define strtk_no_tr1_or_boost
+#include "include\strtk\strtk.hpp"
+
 #include "canvas.h"
 #include "circle.h"
 #include "frame.h"
@@ -7,11 +13,12 @@
 #include "matrixstack.h"
 #include "mesh.h"
 #include "shaderprogram.h"
+#include "spline.h"
 #include "support.h"
 #include "texture.h"
 #include "vertex.h"
 
-Track::Track() : mesh_(NULL), texture_(NULL)
+Track::Track() : mesh_(NULL), spline_(NULL)
 {}
 
 Track::~Track()
@@ -27,31 +34,40 @@ Track::~Track()
   }
 
 	delete mesh_;
+	delete spline_;
 }
 
-void Track::create(Spline *spline) 
+void Track::create(std::string track) 
 {
+	std::vector<glm::vec3> points;
+
+	std::string line;
+	std::ifstream file(track);
+
+	while (std::getline(file, line)) {
+		std::vector<float> coords;
+		strtk::parse(line, ",", coords);
+		points.push_back(glm::vec3(coords.at(0), coords.at(1), coords.at(2)));
+	}
+
 	mesh_ = new Mesh;
 
-	texture_ = new Texture;
-	texture_->load("resources\\textures\\metal.jpg");
-	texture_->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
-	texture_->setSamplerParameter(GL_TEXTURE_WRAP_S, GL_CLAMP);
-	texture_->setSamplerParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+	spline_ = new Spline;
+	spline_->create(points);
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
 
 	int samples = 5;
 
-	for (unsigned int i = 0; i < spline->sampled_points().size() - 1; i++) {
+	for (unsigned int i = 0; i < spline_->sampled_points().size() - 1; i++) {
 		Circle *circle = new Circle;
-		circle->create(new Frame(spline->sampled_points().at(i), spline->sampled_points().at(i+1)), samples, 2.0f);
+		circle->create(new Frame(spline_->sampled_points().at(i), spline_->sampled_points().at(i+1)), samples, 2.0f);
 		circles_.push_back(circle);
 
-		if(i % (int) (spline->sampled_points().size() / 10) == 0) {
+		if(i % (int) (spline_->sampled_points().size() / 10) == 0) {
 			Support *support = new Support;
-			support->create(spline->sampled_points().at(i));
+			support->create(spline_->sampled_points().at(i));
 			supports_.push_back(support);
 		}
 	}
@@ -87,7 +103,7 @@ void Track::create(Spline *spline)
     }
   }
 
-	mesh_->create(texture_, vertices, triangles);
+	mesh_->create(vertices, triangles);
 }
 
 void Track::render()
@@ -110,8 +126,6 @@ void Track::render()
 		glm::vec3(1.0f, 0.443f, 0.654f), glm::vec3(1.0f, 0.356f, 0.603f), glm::vec3(0.1f),
 		15.0f);
 
-	//Lighting::white();
-
 	modelview.push();
 	  main->setUniform("matrices.modelview", modelview.top());
 		mesh_->render();
@@ -120,8 +134,9 @@ void Track::render()
 	for (unsigned int i = 0; i < supports_.size(); i++) {
 		supports_.at(i)->render();
 	}
+}
 
-	/*for (unsigned int i = 0; i < circles_.size(); i++) {
-		circles_.at(i)->render();
-	}*/
+Spline* Track::spline()
+{
+	return spline_;
 }

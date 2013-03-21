@@ -1,5 +1,7 @@
 Must do
 -------
+Refactor canvas
+
 Finanlise layout!
  - once done sort out keybindings rendering of track ext!
 

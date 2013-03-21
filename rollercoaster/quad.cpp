@@ -10,16 +10,7 @@ Quad::Quad() : mesh_(NULL), texture_(NULL)
 
 Quad::~Quad()
 {
-	if(texture_) {
-		texture_->release();
-	}
-
 	delete texture_;
-
-	if(mesh_) {
-		mesh_->release();
-	}
-
 	delete mesh_;
 }
 

@@ -140,6 +140,11 @@ void Spline::render()
 	modelview.pop();
 }
 
+std::vector<glm::vec3> Spline::points() 
+{
+	return points_;
+}
+
 std::vector<glm::vec3> Spline::sampled_points()
 {
 	return sampled_points_;

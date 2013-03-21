@@ -1,8 +1,17 @@
 #include "objmodel.h"
 
+#include "texture.h"
+
 ObjModel::ObjModel() :
-  loaded_(false), attributes_(0)
+  loaded_(false), attributes_(0), texture_(NULL)
 {
+}
+
+ObjModel::~ObjModel()
+{
+  delete texture_;
+  glDeleteVertexArrays(1, &vao_);
+  vbo_.release();
 }
 
 /*-----------------------------------------------
@@ -57,6 +66,8 @@ std::string getDirectoryPath(std::string path)
 /*---------------------------------------------*/
 bool ObjModel::load(std::string filename, std::string material)
 {
+	texture_ = new Texture;
+
   FILE* file;
   fopen_s(&file, filename.c_str(), "rt");
 
@@ -267,7 +278,7 @@ void ObjModel::render()
   }
 
   glBindVertexArray(vao_);
-  texture_.bind();
+  texture_->bind();
   glDrawArrays(GL_TRIANGLES, 0, faces_ * 3);
 }
 
@@ -300,8 +311,8 @@ bool ObjModel::loadMaterial(std::string material)
       std::string texture = line.substr(from, (int) line.size() - from - 1);
 
       // Texture should be in the same directory as material
-      texture_.load(getDirectoryPath(material) + texture, true);
-      texture_.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
+      texture_->load(getDirectoryPath(material) + texture, true);
+      texture_->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
 
       break;
     }
@@ -310,23 +321,6 @@ bool ObjModel::loadMaterial(std::string material)
   fclose(file);
 
   return true;
-}
-
-/*-----------------------------------------------
-  Name:    releaseModel
-  Params:  none
-  Result:  Frees all used resources by model.
-/*---------------------------------------------*/
-void ObjModel::release()
-{
-  if(!loaded_) {
-    return;
-  }
-
-  texture_.release();
-  glDeleteVertexArrays(1, &vao_);
-  vbo_.release();
-  loaded_ = false;
 }
 
 /*-----------------------------------------------

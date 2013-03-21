@@ -16,6 +16,8 @@ Circle::Circle() : frame_(NULL)
 
 Circle::~Circle()
 {
+	glDeleteVertexArrays(1, &vao_);
+	vbo_.release();
 	delete frame_;
 }
 
@@ -91,12 +93,6 @@ void Circle::render()
 
 		glDrawArrays(GL_POINTS, 0, vertices_.size());
 	modelview.pop();
-}
-
-void Circle::release()
-{
-	glDeleteVertexArrays(1, &vao_);
-	vbo_.release();
 }
 
 std::vector<glm::vec3> Circle::vertices()

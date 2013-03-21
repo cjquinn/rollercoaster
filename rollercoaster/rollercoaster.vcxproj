@@ -21,7 +21,6 @@
     <ClInclude Include="lighting.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="penguins.h" />
-    <ClInclude Include="point.h" />
     <ClInclude Include="quad.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shaderprogram.h" />
@@ -50,7 +49,6 @@
     <ClCompile Include="lighting.cpp" />
     <ClCompile Include="mesh.cpp" />
     <ClCompile Include="penguins.cpp" />
-    <ClCompile Include="point.cpp" />
     <ClCompile Include="quad.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shaderprogram.cpp" />
@@ -76,6 +74,9 @@
     <None Include="..\todo.txt" />
     <None Include="resources\shaders\main.frag" />
     <None Include="resources\shaders\main.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="resources\recource_references.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4973297A-B162-4923-A75B-AF5540474D4C}</ProjectGuid>

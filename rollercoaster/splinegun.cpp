@@ -1,6 +1,8 @@
 #include "splinegun.h"
 
-#include "point.h"
+#include <iostream>
+#include <fstream>
+
 #include "spline.h"
 
 SplineGun::SplineGun() : spline_(NULL)
@@ -9,46 +11,41 @@ SplineGun::SplineGun() : spline_(NULL)
 
 SplineGun::~SplineGun()
 {
-	while(!points_.empty()) {
-		delete points_.back();
-		points_.pop_back();
-	}
-
 	delete spline_;
 }
 
 void SplineGun::addPoint(glm::vec3 p)
 {
-	Point *point = new Point;
-	point->create(p);
-	
-	if(points_.size() > 0) {
-		points_.back()->setColour(glm::vec3(1.0f));
-	}
-	
-	points_.push_back(point);
-
-	std::vector<glm::vec3> points;
-
-	for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
-		points.push_back((*point)->position());
-	}
+	points_.push_back(p);
 
 	if(points_.size() > 3) {
 		spline_ = new Spline;
-		spline_->create(points);
+		spline_->create(points_);
 	}
 }
 
 void SplineGun::render()
 {
-	/*for(std::vector<Point*>::iterator point = points_.begin(); point != points_.end(); ++point) {
-		(*point)->render();
-	}*/
-
 	if(spline_) {
 		spline_->render();
 	}
+}
+
+void SplineGun::save()
+{
+	std::ofstream file;
+	file.open("resources\\track\\main.txt");
+
+	for (unsigned int i = 0; i < points_.size(); i++) {
+		file << points_.at(i).x;
+		file << ",";
+		file << points_.at(i).y;
+		file << ",";
+		file << points_.at(i).z;
+		file << "\n";
+	}
+
+	file.close();
 }
 
 Spline *SplineGun::spline()

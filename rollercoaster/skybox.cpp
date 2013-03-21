@@ -5,15 +5,35 @@
 #include "lighting.h"
 #include "matrixstack.h"
 #include "shaderprogram.h"
+#include "texture.h"
+
+Skybox::Skybox()
+{}
+
+Skybox::~Skybox()
+{
+	for (int i = 0; i < 5; ++i) {
+    delete textures_[i];
+  }
+
+  glDeleteVertexArrays(1, &vao_);
+  vbo_.release();
+}
 
 // Create a skybox of a given size with six textures
 void Skybox::create(std::string directory, std::string front, std::string back, std::string left, std::string right, std::string top, /*std::string bottom,*/ float size)
 {
-  textures_[0].load(directory + front);
-  textures_[1].load(directory + back);
-  textures_[2].load(directory + left);
-  textures_[3].load(directory + right);
-  textures_[4].load(directory + top);
+	textures_[0] = new Texture;
+	textures_[1] = new Texture;
+	textures_[2] = new Texture;
+	textures_[3] = new Texture;
+	textures_[4] = new Texture;
+
+  textures_[0]->load(directory + front);
+  textures_[1]->load(directory + back);
+  textures_[2]->load(directory + left);
+  textures_[3]->load(directory + right);
+  textures_[4]->load(directory + top);
   //textures_[5].load(directory + bottom);
 
   directory_ = directory;
@@ -26,9 +46,9 @@ void Skybox::create(std::string directory, std::string front, std::string back, 
   //bottom_ = bottom;
    
   for (int i = 0; i < 5; i++) {
-    textures_[i].setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
-    textures_[i].setSamplerParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    textures_[i].setSamplerParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    textures_[i]->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
+    textures_[i]->setSamplerParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    textures_[i]->setSamplerParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   }
 
   glGenVertexArrays(1, &vao_);
@@ -110,21 +130,10 @@ void Skybox::render()
 		glBindVertexArray(vao_);
 
 		for (int i = 0; i < 5; ++i) {
-			textures_[i].bind();
+			textures_[i]->bind();
 			glDrawArrays(GL_TRIANGLE_STRIP, i * 4, 4);
 		}
 
 		glDepthMask(1);
 	modelview.pop();
-}
-
-// Release the storage assocaited with the skybox
-void Skybox::release()
-{
-  for (int i = 0; i < 5; ++i) {
-    textures_[i].release();
-  }
-
-  glDeleteVertexArrays(1, &vao_);
-  vbo_.release();
 }

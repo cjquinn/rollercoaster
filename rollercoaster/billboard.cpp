@@ -14,7 +14,6 @@ Billboard::Billboard() : frame_(NULL), model_(NULL), poster_(NULL)
 
 Billboard::~Billboard()
 {
-	model_->release();
 	delete frame_;
 	delete model_;
 	delete poster_;

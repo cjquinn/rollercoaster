@@ -10,6 +10,12 @@ Texture::Texture() :
 {
 }
 
+Texture::~Texture()
+{
+	glDeleteSamplers(1, &sampler_);
+  glDeleteTextures(1, &texture_);
+}
+
 // Create a texture from the data stored in bData.  
 void Texture::createFromData(BYTE *data, int width, int height, int bpp, GLenum format, bool mipmaps)
 {
@@ -130,13 +136,6 @@ void Texture::bind(int texture)
   glActiveTexture(GL_TEXTURE0 + texture);
   glBindTexture(GL_TEXTURE_2D, texture_);
   glBindSampler(texture, sampler_);
-}
-
-// Frees memory on the GPU of the texture
-void Texture::release()
-{
-  glDeleteSamplers(1, &sampler_);
-  glDeleteTextures(1, &texture_);
 }
 
 int Texture::minificationFilter()

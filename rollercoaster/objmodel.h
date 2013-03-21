@@ -2,17 +2,19 @@
 #define OBJMODEL_H
 
 #include "common.h"
-#include "texture.h"
 #include "vbo.h"
+
+class Texture;
 
 // Class for handling obj files
 class ObjModel
 {
 public:
   ObjModel();
+	~ObjModel();
+
   bool load(std::string file, std::string material);
   void render();
-  void release();
 
   int polygonCount();
 
@@ -22,7 +24,7 @@ private:
   int faces_;
   VBO vbo_;
   UINT vao_;
-  Texture texture_;
+  Texture *texture_;
 
   bool loadMaterial(std::string filename);
 

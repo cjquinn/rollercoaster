@@ -17,7 +17,6 @@ public:
 	void create(Frame *frame, int samples, float scale);
 	
 	void render();
-	void release();
 
 	std::vector<glm::vec3> vertices();
 	

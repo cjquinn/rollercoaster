@@ -47,8 +47,6 @@ private:
 	Terrain *terrain_;
 	Track *track_;
 
-	bool render_track;
-
 public:
   enum {
     FPS = 30
