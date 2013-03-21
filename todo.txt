@@ -1,11 +1,7 @@
 Must do
 -------
-Create textures for billboards
-Create spotlights on billboards
-Day Time Night Time
+Render to texture for billboard
 
-Implement Blur
+Textures for ground and track....... lame........
 
-Optional
---------
-Rollercoaster creator
+Done!

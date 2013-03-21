@@ -15,10 +15,16 @@ public:
 
 	void render();
 
+	void setNight();
+
 private:
 	std::vector<glm::vec3> positions_;
 	std::vector<glm::mat4> rotations_;
 	std::vector<float> scales_;
+
+	glm::vec3 origin_;
+
+	bool night_;
 
 	ObjModel *model_;
 };

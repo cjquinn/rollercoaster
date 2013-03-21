@@ -11,6 +11,7 @@
 #include "billboard.h"
 #include "camera.h"
 #include "cart.h"
+#include "frame.h"
 #include "lighting.h"
 #include "matrixstack.h"
 #include "penguins.h"
@@ -23,7 +24,8 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), terrain_(NULL), track_(NULL),
+  intensity_(1.0f), spotlight_intensity_(0.0f),
+	billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), terrain_(NULL), track_(NULL),
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -126,11 +128,19 @@ void Canvas::render()
 	main->setUniform("matrices.projection", camera_->perspective());
 	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
 	
+	Lighting::setIntensity(intensity_);
+	Lighting::setSpotlightIntensity(0.0f);
+
 	// Canvas renders
-	billboard_->render();
+	billboard_->render();	
 	penguins_->render();
-	skybox_->render();
   terrain_->render();
+	skybox_->render();
+
+	Lighting::setSpotlightIntensity(spotlight_intensity_);
+	glm::vec3 spotlight_position = cart_->frame()->p() + cart_->frame()->b() * 2.0f;
+	glm::vec4 light_eye = modelview_.top() * glm::vec4(spotlight_position, 1.0f);
+	Lighting::setSpotlight(light_eye, glm::normalize(camera_->normal(modelview_.top()) * cart_->frame()->t()), 0.0f, 5.0f); 
 	
 	// Rollercoaster renders
 	track_->render();
@@ -236,20 +246,31 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
         case VK_ESCAPE:
           PostQuitMessage(0);
 					break;
+				// '1'
 				case 0x31:
 					camera_->setState(FIRST_PERSON);
 					break;
+				// '2'
 				case 0x32:
 					camera_->setState(SIDE_VIEW);
 					break;
+				// '3'
 				case 0x33 :
 					camera_->setState(TOP_VIEW);
 					break;
+				// '4'
 				case 0x34 :
 					camera_->setState(FREE_VIEW);
 					break;
+				// '5'
 				case 0x35 :
 					camera_->setState(BILLBOARD);
+					break;
+				// 'L'
+				case 0x4C :
+					intensity_ = (intensity_ == 1.0f) ? 0.1f : 1.0f;
+					spotlight_intensity_ = (spotlight_intensity_ == 0.0f) ? 0.5f : 0.0f;
+					penguins_->setNight();
 					break;
       }
     break;

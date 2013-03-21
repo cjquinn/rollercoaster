@@ -35,6 +35,9 @@ private:
   void update();
   void render();
 
+	float intensity_;
+	float spotlight_intensity_;
+
 	glutil::MatrixStack modelview_;
 	std::vector<ShaderProgram *> shader_programs_;
 

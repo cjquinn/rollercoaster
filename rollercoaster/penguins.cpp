@@ -1,6 +1,7 @@
 #include "penguins.h"
 
 #include "canvas.h"
+#include "camera.h"
 #include "frame.h"
 #include "lighting.h"
 #include "matrixstack.h"
@@ -8,7 +9,7 @@
 #include "shaderprogram.h"
 #include "terrain.h"
 
-Penguins::Penguins() : model_(NULL)
+Penguins::Penguins() : model_(NULL), night_(false)
 {}
 
 Penguins::~Penguins()
@@ -22,6 +23,8 @@ void Penguins::create(int n, glm::vec3 origin)
 		model_ = new ObjModel;
 		model_->load("resources\\models\\penguin\\penguin.obj", "penguin.mtl");
 	}
+
+	origin_ = origin;
 
 	for (int i = 0; i < n/2; i++) {
 		for (int j = 0; j < n/2; j++) { 
@@ -51,11 +54,15 @@ void Penguins::render()
 	glm::vec4 light_position(0, 100, 0, 1);
 	glm::vec4 light_eye = modelview.top() * light_position;
 
-	Lighting::set(
-		light_eye, 
-		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(1.0f), glm::vec3(0.1f),
-		15.0f);
+	Lighting::setPosition(light_eye);
+	Lighting::setReflectance(glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(1.0f), glm::vec3(0.1f), 15.0f);
+
+	if (night_) {
+		Lighting::setSpotlightIntensity(glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(1.0f), glm::vec3(0.1f));
+		glm::vec3 spotlight_position = origin_ + glm::vec3(50.0f, 50.0f, 50.0f);
+		light_eye = modelview.top() * glm::vec4(spotlight_position, 1.0f);
+		Lighting::setSpotlight(light_eye, glm::normalize(Canvas::instance().camera()->normal(modelview.top()) * glm::vec3(0.0f, -1.0f, 0.0f)), 30.0f, 35.0f); 
+	}
 
 	for(unsigned int i = 0; i < positions_.size(); i++) {
 		modelview.push();
@@ -66,4 +73,9 @@ void Penguins::render()
 			model_->render();
 		modelview.pop();
 	}
+}
+
+void Penguins::setNight()
+{
+	night_ = (night_) ? false : true;
 }

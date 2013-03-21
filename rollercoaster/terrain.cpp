@@ -149,11 +149,8 @@ void Terrain::render()
   glm::vec4 light_position(0, 100, 0, 1);
   glm::vec4 light_eye = modelview.top() * light_position;
 
-	Lighting::set(
-		light_eye, 
-		glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f),
-		glm::vec3(0.352f, 0.443f, 0.654f), glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(0.1f),
-		15.0f);
+	Lighting::setPosition(light_eye);
+	Lighting::setReflectance(glm::vec3(0.352f, 0.443f, 0.654f), glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(0.1f), 15.0f);
 
 	modelview.push();
 	  main->setUniform("matrices.modelview", modelview.top());
