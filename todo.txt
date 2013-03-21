@@ -1,13 +1,12 @@
 Must do
 -------
-Refactor canvas
+Add camera functionality
 
 Finanlise layout!
  - once done sort out keybindings rendering of track ext!
 
 Create textures for billboards
 Create spotlights on billboards
-Add camera functionality
 Day Time Night Time
 
 Implement Blur

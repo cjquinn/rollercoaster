@@ -18,7 +18,6 @@ class Camera;
 class Cart;
 class Penguins;
 class Skybox;
-class SplineGun;
 class Terrain;
 class Track;
 
@@ -43,7 +42,6 @@ private:
 	Cart *cart_;
 	Penguins *penguins_;
 	Skybox *skybox_;
-	SplineGun *spline_gun_;
 	Terrain *terrain_;
 	Track *track_;
 

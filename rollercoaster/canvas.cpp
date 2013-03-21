@@ -23,7 +23,7 @@
 
 Canvas::Canvas() :
 	//Canvas Objects
-  billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), spline_gun_(NULL), terrain_(NULL), track_(NULL),
+  billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), terrain_(NULL), track_(NULL),
   dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
@@ -36,7 +36,6 @@ Canvas::~Canvas()
 	delete cart_;
 	delete penguins_;
   delete skybox_;
-	delete spline_gun_;
 	delete terrain_;
 	delete track_;
 
@@ -60,7 +59,6 @@ void Canvas::init()
   camera_ = new Camera;
 	cart_ = new Cart;
 	penguins_ = new Penguins;
-	spline_gun_ = new SplineGun;
 	skybox_ = new Skybox;
 	terrain_ = new Terrain;
 	track_ = new Track;
@@ -108,7 +106,7 @@ void Canvas::init()
 	penguins_->create(20, glm::vec3(100.0f, 0.0f, -200.0f));
 
 	// Rollercoaster creates
-	track_->create("resources\\track\\track.txt");
+	track_->create("resources\\track\\main.csv");
 	cart_->create(track_->spline());
 }
 
@@ -131,7 +129,6 @@ void Canvas::render()
 	//billboard_->render();
 	//penguins_->render();
 	skybox_->render();
-	spline_gun_->render();
   terrain_->render();
 	
 	// Rollercoaster renders
@@ -239,10 +236,9 @@ LRESULT Canvas::processEvents(HWND window,UINT message, WPARAM w_param, LPARAM l
           PostQuitMessage(0);
 					break;
 				case VK_SPACE:
-					spline_gun_->addPoint(camera_->position());
 					break;
 				case VK_RETURN:
-					spline_gun_->save();
+					camera_->follow(track_->spline());
 					break;
       }
     break;

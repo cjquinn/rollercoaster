@@ -34,7 +34,7 @@ void SplineGun::render()
 void SplineGun::save()
 {
 	std::ofstream file;
-	file.open("resources\\track\\main.txt");
+	file.open("resources\\track\\main.csv");
 
 	for (unsigned int i = 0; i < points_.size(); i++) {
 		file << points_.at(i).x;

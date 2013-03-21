@@ -1,1 +1,6 @@
 // Skybox downloaded from http://www.redsorceress.com/skybox.html
+// Penguin model from http://www.turbosquid.com/3d-models/blender-penguin/497636
+// Billboard model from http://www.turbosquid.com/3d-models/3d-billboard-advertising-poster-model/314407
+// Cart model from http://moodle.city.ac.uk/mod/resource/view.php?id=1147459 edited and textured by Christy Quinn
+// All textures made by Christy Quinn
+// Heightmap from http://www.mike.kennelly.dsl.pipex.com/railroads/images/tga/heightmap/mesa_heightmap.jpg
