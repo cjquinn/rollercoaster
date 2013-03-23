@@ -4,6 +4,7 @@
 #include <gl/gl.h>
 
 // setup includes
+#include "fbo.h"
 #include "timer.h"
 #include "window.h"
 
@@ -26,7 +27,7 @@ Canvas::Canvas() :
 	//Canvas Objects
   intensity_(1.0f), spotlight_intensity_(0.0f),
 	billboard_(NULL), camera_(NULL), cart_(NULL), penguins_(NULL), skybox_(NULL), terrain_(NULL), track_(NULL),
-  dt_(0.0), fps_(0), timer_(NULL), window_ (Window::instance())
+  dt_(0.0), fbo_(NULL), fps_(0), timer_(NULL), window_ (Window::instance())
 {
 }
 
@@ -47,6 +48,7 @@ Canvas::~Canvas()
   }
 
   // setup objects
+	delete fbo_;
   delete timer_;
 }
 
@@ -55,6 +57,11 @@ void Canvas::init()
   // Set the clear colour and depth
   glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
   glClearDepth(1.0f);
+
+	// Utitlity creates
+	fbo_ = new FBO;
+	fbo_->create(Window::instance().WIDTH, Window::instance().HEIGHT);
+	fbo_->addDepthBuffer();
 
   /// Create objects
 	billboard_ = new Billboard;
@@ -115,12 +122,13 @@ void Canvas::init()
 
 void Canvas::render() 
 {  
+	fbo_->bind();
   // Clear the buffers and enable depth testing (z-buffering)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
 
 	modelview_.setIdentity();
-	modelview_.lookAt(camera_->position(), camera_->view(), camera_->up_vector());
+	modelview_.lookAt(cart_->frame()->p() + 5.0f * cart_->frame()->b() - cart_->frame()->t() * 0.5f, cart_->frame()->p() + 30.0f * cart_->frame()->t(), camera_->up_vector());
 
 	ShaderProgram *main = shader_programs();
 
@@ -132,14 +140,47 @@ void Canvas::render()
 	Lighting::setSpotlightIntensity(0.0f);
 
 	// Canvas renders
-	billboard_->render();	
+	penguins_->render();
+	skybox_->render();
+	terrain_->render();
+
+	Lighting::setSpotlightIntensity(spotlight_intensity_);
+	glm::vec3 spotlight_position = cart_->frame()->p() + cart_->frame()->b() * 2.0f;
+	glm::vec4 light_eye = modelview_.top() * glm::vec4(spotlight_position, 1.0f);
+	Lighting::setSpotlight(light_eye, glm::normalize(camera_->normal(modelview_.top()) * cart_->frame()->t()), 0.0f, 5.0f); 
+	
+	// Rollercoaster renders
+	track_->render();
+	cart_->render();
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	// Clear the buffers and enable depth testing (z-buffering)
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glEnable(GL_DEPTH_TEST);
+
+	modelview_.setIdentity();
+	modelview_.lookAt(camera_->position(), camera_->view(), camera_->up_vector());
+
+	main->use();
+	main->setUniform("matrices.projection", camera_->perspective());
+	main->setUniform("matrices.normal", camera_->normal(modelview_.top()));
+	
+	Lighting::setIntensity(intensity_);
+	Lighting::setSpotlightIntensity(0.0f);
+
+	// Canvas renders
+	fbo_->bindTexture(0, true);
+	
+	Lighting::setIntensity(1.0f);
+		billboard_->render();	
+	Lighting::setIntensity(intensity_);
+
 	penguins_->render();
   terrain_->render();
 	skybox_->render();
 
 	Lighting::setSpotlightIntensity(spotlight_intensity_);
-	glm::vec3 spotlight_position = cart_->frame()->p() + cart_->frame()->b() * 2.0f;
-	glm::vec4 light_eye = modelview_.top() * glm::vec4(spotlight_position, 1.0f);
 	Lighting::setSpotlight(light_eye, glm::normalize(camera_->normal(modelview_.top()) * cart_->frame()->t()), 0.0f, 5.0f); 
 	
 	// Rollercoaster renders

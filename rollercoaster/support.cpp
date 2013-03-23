@@ -62,7 +62,7 @@ void Support::create(glm::vec3 p)
     }
   }
 
-	mesh_->create(vertices, triangles);
+	mesh_->create(vertices, triangles, false);
 }
 
 void Support::render()

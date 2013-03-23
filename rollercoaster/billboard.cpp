@@ -33,7 +33,7 @@ void Billboard::render()
 {
 	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
-	main->setUniform("toonify", true);
+
 	main->setUniform("texture_fragment", true);
 
 	// Set up a matrix stack
@@ -43,20 +43,9 @@ void Billboard::render()
 	glm::vec4 light_position(0, 100, 0, 1);
 	glm::vec4 light_eye = modelview.top() * light_position;
 
-	Lighting::setPosition(light_eye);
-	Lighting::setReflectance(glm::vec3(0.352f, 0.443f, 0.654f), glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(0.1f), 15.0f);
-
 	float y = Canvas::instance().terrain()->groundHeight(frame_->p());
 
-	modelview.push();
-		modelview.translate(glm::vec3(frame_->p().x, y, frame_->p().z));
-		modelview.scale(5.0f);
-		main->setUniform("matrices.modelview", modelview.top());
-		model_->render();
-	modelview.pop();
-
 	main->setUniform("toonify", false);
-	main->setUniform("texture_fragment", false);
 
 	Lighting::white();
 
@@ -67,4 +56,17 @@ void Billboard::render()
 		main->setUniform("matrices.modelview", modelview.top());
 		poster_->render();
 	modelview.pop();
+
+	main->setUniform("toonify", true);
+
+	Lighting::setPosition(light_eye);
+	Lighting::setReflectance(glm::vec3(0.352f, 0.443f, 0.654f), glm::vec3(0.247f, 0.356f, 0.603f), glm::vec3(0.1f), 15.0f);
+
+	modelview.push();
+		modelview.translate(glm::vec3(frame_->p().x, y, frame_->p().z));
+		modelview.scale(5.0f);
+		main->setUniform("matrices.modelview", modelview.top());
+		model_->render();
+	modelview.pop();
+
 }

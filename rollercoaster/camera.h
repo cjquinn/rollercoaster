@@ -70,6 +70,7 @@ public:
 
 
 	void setState(State state);
+	State state();
 
 private:
   // The position of the camera's centre of projection

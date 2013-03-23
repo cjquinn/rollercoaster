@@ -55,7 +55,7 @@ void Mesh::computeVertexNormals()
   }
 }
 
-void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &triangles)
+void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &triangles, bool texture)
 {
   vertices_ = vertices;
   triangles_ = triangles;
@@ -69,7 +69,10 @@ void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigne
   }
 
   computeVertexNormals();
-  computeTextureCoords();
+	
+	if (texture) {
+		computeTextureCoords();
+	}
 
 	// Use VAO to store state associated with vertices
   glGenVertexArrays(1, &vao_);

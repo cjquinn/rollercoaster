@@ -13,7 +13,6 @@ public:
 	~Quad();
 
 	void create(float w, float h);
-	void create(float w, float h, std::string texture);
 	void render();
 
 private:

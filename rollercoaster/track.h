@@ -7,6 +7,7 @@ class Circle;
 class Mesh;
 class Spline;
 class Support;
+class Texture;
 
 class Track
 {
@@ -25,6 +26,7 @@ private:
 
 	Mesh *mesh_;
 	Spline *spline_;
+	Texture *texture_;
 };
 
 #endif

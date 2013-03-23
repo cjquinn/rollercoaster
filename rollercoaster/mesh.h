@@ -17,7 +17,7 @@ public:
 	Mesh();
 	~Mesh();
 
-	void create(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles);
+	void create(const std::vector<Vertex> &verticies, const std::vector<unsigned int> &triangles, bool texture);
 	
 	void computeVertexNormals();
 	glm::vec3 computeTriangleNormal(unsigned int id);

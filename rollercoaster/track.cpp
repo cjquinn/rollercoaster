@@ -18,7 +18,7 @@
 #include "texture.h"
 #include "vertex.h"
 
-Track::Track() : mesh_(NULL), spline_(NULL)
+Track::Track() : mesh_(NULL), spline_(NULL), texture_(NULL)
 {}
 
 Track::~Track()
@@ -35,6 +35,7 @@ Track::~Track()
 
 	delete mesh_;
 	delete spline_;
+	delete texture_;
 }
 
 void Track::create(std::string track) 
@@ -54,6 +55,12 @@ void Track::create(std::string track)
 
 	spline_ = new Spline;
 	spline_->create(points);
+
+	texture_ = new Texture;
+	texture_->load("resources\\textures\\track.jpg");
+	texture_->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
+  texture_->setSamplerParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+  texture_->setSamplerParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> triangles;
@@ -103,7 +110,7 @@ void Track::create(std::string track)
     }
   }
 
-	mesh_->create(vertices, triangles);
+	mesh_->create(vertices, triangles, true);
 }
 
 void Track::render()
@@ -111,8 +118,10 @@ void Track::render()
 	ShaderProgram *main = Canvas::instance().shader_programs();
 	main->use();
 	main->setUniform("toonify", true);
-	main->setUniform("texture_fragment", false);
+	main->setUniform("texture_fragment", true);
 
+	texture_->bind();
+	
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();
 

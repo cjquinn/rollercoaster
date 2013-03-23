@@ -16,6 +16,8 @@ Terrain::Terrain() : dib_(NULL), mesh_(NULL), texture_(NULL)
 Terrain::~Terrain()
 {
 	delete [] heightmap_;
+	delete mesh_;
+	delete texture_;
 }
 
 glm::vec3 Terrain::imageToWorld(glm::vec3 p)
@@ -48,6 +50,15 @@ glm::vec3 Terrain::worldToImage(glm::vec3 p)
 void Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size_z, float scale)
 {
 	mesh_ = new Mesh;
+	texture_ = new Texture;
+	texture_->load("resources\\textures\\terrain.jpg");
+	texture_->setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
+  texture_->setSamplerParameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
+  texture_->setSamplerParameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glm::vec2 texture_coords[4] = {
+    glm::vec2(0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f, 1.0f), glm::vec2(1.0f, 0.0f)
+  };
 
 	FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 	fif = FreeImage_GetFileType(heightmap, 0);
@@ -86,7 +97,7 @@ void Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size
 			world.y *= scale;	 
 			heightmap_[index] = world.y;
 
-			Vertex v = Vertex(world, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0, 0.0));
+			Vertex v = Vertex(world, glm::vec3(0.0f, 0.0f, 0.0f), texture_coords[index % 4]);
 			vertices.push_back(v);
 		}
 	}
@@ -107,7 +118,7 @@ void Terrain::create(char *heightmap, glm::vec3 origin, float size_x, float size
 		}
 	}
 
-	mesh_->create(vertices, triangles);
+	mesh_->create(vertices, triangles, false);
 }
 
 float Terrain::groundHeight(glm::vec3 p)
@@ -141,6 +152,8 @@ void Terrain::render()
 	main->use();
 	main->setUniform("toonify", true);
 	main->setUniform("texture_fragment", false);
+
+	texture_->bind();
 
 	// Set up a matrix stack
   glutil::MatrixStack modelview = Canvas::instance().modelview();

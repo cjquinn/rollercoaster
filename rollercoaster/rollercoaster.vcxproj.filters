@@ -102,6 +102,9 @@
     <ClInclude Include="quad.h">
       <Filter>Header Files\Basic Objects</Filter>
     </ClInclude>
+    <ClInclude Include="fbo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="quad.cpp">
       <Filter>Source Files\Basic Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="fbo.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

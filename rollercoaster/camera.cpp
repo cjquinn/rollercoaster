@@ -218,3 +218,8 @@ void Camera::setState(State state)
 {
 	state_ = state;
 }
+
+State Camera::state()
+{
+	return state_;
+}

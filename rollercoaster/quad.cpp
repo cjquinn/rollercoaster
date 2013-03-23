@@ -22,9 +22,9 @@ void Quad::create(float w, float h)
 	std::vector<unsigned int> triangles;
 	
 	Vertex v0(glm::vec3(-w, 0.0f, -h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
-	Vertex v1(glm::vec3(-w, 0.0f, h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
-	Vertex v2(glm::vec3(w, 0.0f, h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
-	Vertex v3(glm::vec3(w, 0.0f, -h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 0.0f));
+	Vertex v1(glm::vec3(-w, 0.0f, h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 1.0f));
+	Vertex v2(glm::vec3(w, 0.0f, h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 1.0f));
+	Vertex v3(glm::vec3(w, 0.0f, -h), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(1.0f, 0.0f));
 	
 	vertices.push_back(v0);
 	vertices.push_back(v1);
@@ -39,11 +39,8 @@ void Quad::create(float w, float h)
 	triangles.push_back(1);
 	triangles.push_back(2);
 
-	mesh_->create(vertices, triangles);
+	mesh_->create(vertices, triangles, false);
 }
-
-void Quad::create(float w, float h, std::string texture)
-{}
 
 void Quad::render()
 {

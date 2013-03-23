@@ -8,6 +8,7 @@
 class Window;
 
 // Utility classes
+class FBO;
 class Shader;
 class ShaderProgram;
 class Timer;
@@ -77,6 +78,7 @@ private:
   int fps_;
   bool active_;
 
+	FBO *fbo_;
 	Timer *timer_;
 };
 
