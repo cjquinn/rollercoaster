@@ -173,7 +173,7 @@ void Canvas::init()
 
 	// Canvas creates
   skybox_->create(ROOT_DIR + std::string("/resources/skyboxes/toon_snow/"), "front.jpg", "back.jpg", "left.jpg", "right.jpg", "top.jpg", 2048.0f);
-	terrain_->create(ROOT_DIR + std::string("/resources/heightmap/heightmap.bmp"), glm::vec3(0.0f), 1024.0f, 1024.0f, 100.0f);
+	terrain_->create(ROOT_DIR + std::string("/resources/heightmaps/heightmap.bmp"), glm::vec3(0.0f), 1024.0f, 1024.0f, 100.0f);
 
 	// Terrain dependent creates
 	billboard_->create(glm::vec3(350.0f, 0.0f, 130.0f));

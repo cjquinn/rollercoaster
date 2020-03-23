@@ -82,9 +82,6 @@ void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigne
   vbo_.create();
   vbo_.bind();
 
-  // A colour
-  //glm::vec3 colour = glm::vec3(0.0f, 1.0f, 0.0f);
-
   // Put the vertex attributes in the VBO
   for (unsigned int i = 0; i < vertices_.size(); ++i) {
     vbo_.addData(&vertices_[i].position, sizeof(glm::vec3));
@@ -94,6 +91,12 @@ void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigne
 	
   // Upload the VBO to the GPU
   vbo_.uploadDataToGPU(GL_STATIC_DRAW);
+
+  // Indicies buffer
+  GLuint elementBuffer;
+  glGenBuffers(1, &elementBuffer);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, triangles_.size() * sizeof(unsigned int), &triangles_[0], GL_STATIC_DRAW);
 
   // Set the vertex attribute locations
   GLsizei stride = 2 * sizeof(glm::vec3) + sizeof(glm::vec2);
@@ -115,5 +118,5 @@ void Mesh::create(const std::vector<Vertex> &vertices, const std::vector<unsigne
 void Mesh::render()
 {
   glBindVertexArray(vao_);
-	glDrawElements(GL_TRIANGLES, triangles_.size(), GL_UNSIGNED_INT, &triangles_[0]);
+	glDrawElements(GL_TRIANGLES, triangles_.size(), GL_UNSIGNED_INT, 0);
 }

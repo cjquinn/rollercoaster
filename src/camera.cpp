@@ -23,11 +23,13 @@ void Camera::set(glm::vec3 &position, glm::vec3 &view, glm::vec3 &up_vector)
 // Respond to mouse movement
 void Camera::setViewByMouse()
 {
+  glfwSetInputMode(Window::instance().glwfWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
   int windowWidth, windowHeight;
   glfwGetFramebufferSize(Window::instance().glwfWindow(), &windowWidth, &windowHeight);
 
-  int middle_x = windowWidth >> 1;
-  int middle_y = windowHeight >> 1;
+  int middle_x = windowWidth / 2;
+  int middle_y = windowHeight / 2;
 
   float angle_y = 0.0f;
   float angle_z = 0.0f;
@@ -36,7 +38,7 @@ void Camera::setViewByMouse()
   double mouseX, mouseY;
   glfwGetCursorPos(Window::instance().glwfWindow(), &mouseX, &mouseY);
 
-  if (mouseX == middle_x && mouseY == middle_y) {
+  if (int(mouseX) == middle_x && int(mouseY) == middle_y) {
     return;
   }
 
@@ -47,8 +49,7 @@ void Camera::setViewByMouse()
 
   rotation_x -= angle_z;
 
-  float max_angle = 1.56f;
-
+  float max_angle = (float) M_PI / 2;
   if (rotation_x > max_angle) {
     rotation_x = max_angle;
   } else if (rotation_x < -max_angle) {
@@ -60,8 +61,8 @@ void Camera::setViewByMouse()
     rotateViewPoint(angle_z, axis);
   }
 
-  glm::vec3 rotation = glm::vec3(0, 1, 0);
-  rotateViewPoint(angle_y, rotation);
+  glm::vec3 point = glm::vec3(0, 1, 0);
+  rotateViewPoint(angle_y, point);
 }
 
 // Rotate the camera view point -- this effectively rotates the camera since it is looking at the view point
@@ -135,19 +136,19 @@ void Camera::update(double dt)
 void Camera::translateByKeyboard(double dt)
 {
   if (glfwGetKey(Window::instance().glwfWindow(), GLFW_KEY_W) == GLFW_PRESS) {
-    advance(1.0 * dt);
+    advance(3.0 * dt);
   }
 
   if (glfwGetKey(Window::instance().glwfWindow(), GLFW_KEY_S) == GLFW_PRESS) {
-    advance(-1.0 * dt);
+    advance(-3.0 * dt);
   }
 
   if (glfwGetKey(Window::instance().glwfWindow(), GLFW_KEY_A) == GLFW_PRESS) {
-    strafe(1.0 * dt);
+    strafe(-3.0 * dt);
   }
 
   if (glfwGetKey(Window::instance().glwfWindow(), GLFW_KEY_D) == GLFW_PRESS) {
-    strafe(-1.0 * dt);
+    strafe(3.0 * dt);
   }
 }
 

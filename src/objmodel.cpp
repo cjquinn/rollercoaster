@@ -214,7 +214,7 @@ bool ObjModel::load(std::string filename, std::string material)
   if(attributes_ & 2) {
     glEnableVertexAttribArray(1);
     
-    int offset = 0;
+    unsigned long offset = 0;
     if(attributes_ & 1) {
       offset += sizeof(glm::vec3);
     }
@@ -226,7 +226,7 @@ bool ObjModel::load(std::string filename, std::string material)
   if(attributes_ & 4) {
     glEnableVertexAttribArray(2);
 
-    int offset = 0;
+    unsigned long offset = 0;
     if(attributes_ & 1) {
       offset += sizeof(glm::vec3);
     }
