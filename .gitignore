@@ -60,3 +60,5 @@ packages/
 
 #Test files
 *.testsettings
+
+src/rootdir.h
